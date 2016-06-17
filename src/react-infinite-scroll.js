@@ -8,14 +8,8 @@ function topPosition(domElt) {
   return domElt.offsetTop + topPosition(domElt.offsetParent);
 }
 
-var component;
-
 export default class InfiniteScroll extends React.Component {
-  constructor(props) {
-    super(props);
-
-    component = this;
-  }
+ 
   componentDidMount() {
     this.pageLoaded = this.props.pageStart;
     this.attachScrollListener();
@@ -28,46 +22,46 @@ export default class InfiniteScroll extends React.Component {
     return React.DOM.div(null, props.children, props.hasMore && (props.loader || this._defaultLoader));
   }
   scrollListener() {
-    var el = ReactDOM.findDOMNode(component);
+    var el = ReactDOM.findDOMNode(this);
     var scrollEl = window;
 
     var offset;
-    if(component.props.useWindow == true) {
+    if(his.props.useWindow == true) {
       var scrollTop = (scrollEl.pageYOffset !== undefined) ? scrollEl.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
       offset = topPosition(el) + el.offsetHeight - scrollTop - window.innerHeight;
     } else {
       offset = el.offsetHeight - el.parentNode.scrollTop - el.parentNode.clientHeight;
     }
 
-    if (offset < Number(component.props.threshold)) {
-      component.detachScrollListener();
+    if (offset < Number(this.props.threshold)) {
+      this.detachScrollListener();
       // call loadMore after detachScrollListener to allow
       // for non-async loadMore functions
-      component.props.loadMore(component.pageLoaded += 1);
+      this.props.loadMore(this.pageLoaded += 1);
     }
   }
   attachScrollListener() {
-    if (!component.props.hasMore) {
+    if (!this.props.hasMore) {
       return;
     }
 
     var scrollEl = window;
-    if(component.props.useWindow == false) {
+    if(this.props.useWindow == false) {
       scrollEl = ReactDOM.findDOMNode(this).parentNode;
     }
 
-    scrollEl.addEventListener('scroll', this.scrollListener);
-    scrollEl.addEventListener('resize', this.scrollListener);
+    scrollEl.addEventListener('scroll', this.scrollListener.bind(this));
+    scrollEl.addEventListener('resize', this.scrollListener.bind(this));
     this.scrollListener();
   }
   detachScrollListener() {
     var scrollEl = window;
-    if(component.props.useWindow == false) {
+    if(this.props.useWindow == false) {
       scrollEl = ReactDOM.findDOMNode(this).parentNode;
     }
 
-    scrollEl.removeEventListener('scroll', this.scrollListener);
-    scrollEl.removeEventListener('resize', this.scrollListener);
+    scrollEl.removeEventListener('scroll', this.scrollListener.bind(this));
+    scrollEl.removeEventListener('resize', this.scrollListener.bind(this));
   }
   componentWillUnmount() {
     this.detachScrollListener();
