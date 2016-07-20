@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import qwest from 'qwest';
 
-const imageList = [];
 const api = {
     baseUrl: 'https://api.soundcloud.com',
     client_id: 'caf73ef1e709f839664ab82bef40fa96'
@@ -18,9 +17,11 @@ class App extends Component {
             hasMoreItems: true,
             nextHref: null
         };
+
+        this.loadItems = this.loadItems.bind(this);
     }
 
-    loadItems(page) {
+    loadItems() {
         var self = this;
 
         var url = api.baseUrl + '/users/8665091/favorites';
@@ -60,20 +61,20 @@ class App extends Component {
             });
     }
 
+    renderTracks() {
+        return this.state.tracks.map((track, i) => (
+          <div className="track" key={i}>
+              <a href={track.permalink_url} target="_blank">
+                  <img src={track.artwork_url} width="150" height="150" />
+                  <p className="title">{track.title}</p>
+              </a>
+          </div>
+        ));
+    }
+
     render() {
         const loader = <div className="loader">Loading ...</div>;
-
-        var items = [];
-        this.state.tracks.map((track, i) => {
-            items.push(
-                <div className="track" key={i}>
-                    <a href={track.permalink_url} target="_blank">
-                        <img src={track.artwork_url} width="150" height="150" />
-                        <p className="title">{track.title}</p>
-                    </a>
-                </div>
-            );
-        });
+        const items = this.renderTracks();
 
         return (
             <InfiniteScroll
@@ -88,8 +89,8 @@ class App extends Component {
             </InfiniteScroll>
         );
     }
-};
+}
 
-ReactDOM.render(
+render(
     <App />
 , document.getElementById('root'));
