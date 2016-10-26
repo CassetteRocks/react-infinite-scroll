@@ -43,25 +43,26 @@ var InfiniteScroll = function (_Component) {
             this.attachScrollListener();
         }
     }, {
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate() {
-            this.attachScrollListener();
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (nextProps.children.length > this.props.children.length) {
+                this.attachScrollListener();
+            }
         }
     }, {
         key: 'render',
         value: function render() {
-            var _props = this.props;
-            var children = _props.children;
-            var element = _props.element;
-            var hasMore = _props.hasMore;
-            var initialLoad = _props.initialLoad;
-            var loader = _props.loader;
-            var loadMore = _props.loadMore;
-            var pageStart = _props.pageStart;
-            var threshold = _props.threshold;
-            var useWindow = _props.useWindow;
-
-            var props = _objectWithoutProperties(_props, ['children', 'element', 'hasMore', 'initialLoad', 'loader', 'loadMore', 'pageStart', 'threshold', 'useWindow']);
+            var _props = this.props,
+                children = _props.children,
+                element = _props.element,
+                hasMore = _props.hasMore,
+                initialLoad = _props.initialLoad,
+                loader = _props.loader,
+                loadMore = _props.loadMore,
+                pageStart = _props.pageStart,
+                threshold = _props.threshold,
+                useWindow = _props.useWindow,
+                props = _objectWithoutProperties(_props, ['children', 'element', 'hasMore', 'initialLoad', 'loader', 'loadMore', 'pageStart', 'threshold', 'useWindow']);
 
             return _react2.default.createElement(element, props, children, hasMore && (loader || this._defaultLoader));
         }
@@ -76,6 +77,8 @@ var InfiniteScroll = function (_Component) {
     }, {
         key: 'scrollListener',
         value: function scrollListener() {
+            var _this2 = this;
+
             var el = _reactDom2.default.findDOMNode(this);
             var scrollEl = window;
 
@@ -91,7 +94,9 @@ var InfiniteScroll = function (_Component) {
                 this.detachScrollListener();
                 // Call loadMore after detachScrollListener to allow for non-async loadMore functions
                 if (typeof this.props.loadMore == 'function') {
-                    this.props.loadMore(this.pageLoaded += 1);
+                    setTimeout(function () {
+                        _this2.props.loadMore(_this2.pageLoaded += 1);
+                    }, 10);
                 }
             }
         }

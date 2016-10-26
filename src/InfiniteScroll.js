@@ -32,8 +32,10 @@ export default class InfiniteScroll extends Component {
         this.attachScrollListener();
     }
 
-    componentDidUpdate() {
-        this.attachScrollListener();
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.children.length > this.props.children.length) {
+          this.attachScrollListener();
+        }
     }
 
     render() {
@@ -75,8 +77,10 @@ export default class InfiniteScroll extends Component {
         if(offset < Number(this.props.threshold)) {
             this.detachScrollListener();
             // Call loadMore after detachScrollListener to allow for non-async loadMore functions
-            if(typeof this.props.loadMore == 'function') {
+            if (typeof this.props.loadMore == 'function') {
+              setTimeout(() => {
                 this.props.loadMore(this.pageLoaded += 1);
+              }, 10)
             }
         }
     }
@@ -112,7 +116,7 @@ export default class InfiniteScroll extends Component {
     componentWillUnmount() {
         this.detachScrollListener();
     }
-    
+
     // Set a defaut loader for all your `InfiniteScroll` components
     setDefaultLoader(loader) {
         this._defaultLoader = loader;
