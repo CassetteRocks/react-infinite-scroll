@@ -59,15 +59,20 @@ var InfiniteScroll = function (_Component) {
                 threshold = _props.threshold,
                 useWindow = _props.useWindow,
                 isReverse = _props.isReverse,
-                props = _objectWithoutProperties(_props, ['children', 'element', 'hasMore', 'initialLoad', 'loader', 'loadMore', 'pageStart', 'threshold', 'useWindow', 'isReverse']);
+                scrollElement = _props.scrollElement,
+                props = _objectWithoutProperties(_props, ['children', 'element', 'hasMore', 'initialLoad', 'loader', 'loadMore', 'pageStart', 'threshold', 'useWindow', 'isReverse', 'scrollElement']);
 
-            var ref = function ref(node) {
-                _this2.scrollComponent = node;
-            };
+            if (scrollElement) {
+                props.ref = function (node) {
+                    _this2.scrollComponent = scrollElement;
+                };
+            } else {
+                props.ref = function (node) {
+                    _this2.scrollComponent = node;
+                };
+            }
 
-            return _react2.default.createElement(element, {
-                ref: ref
-            }, children);
+            return _react2.default.createElement(element, props, children, hasMore && (loader || this._defaultLoader));
         }
     }, {
         key: 'calculateTopPosition',
@@ -84,7 +89,11 @@ var InfiniteScroll = function (_Component) {
             var scrollEl = window;
 
             var offset = void 0;
-            if (this.props.useWindow) {
+            if (this.props.scrollElement) {
+                if (this.props.isReverse) {
+                    offset = el.scrollTop;
+                } else offset = el.scrollHeight - el.scrollTop - el.clientHeight;
+            } else if (this.props.useWindow) {
                 var scrollTop = scrollEl.pageYOffset !== undefined ? scrollEl.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
                 if (this.props.isReverse) offset = scrollTop;else offset = this.calculateTopPosition(el) + el.offsetHeight - scrollTop - window.innerHeight;
             } else {
@@ -107,7 +116,9 @@ var InfiniteScroll = function (_Component) {
             }
 
             var scrollEl = window;
-            if (this.props.useWindow == false) {
+            if (this.props.scrollElement) {
+                scrollEl = this.scrollComponent;
+            } else if (this.props.useWindow == false) {
                 scrollEl = this.scrollComponent.parentNode;
             }
 
@@ -122,8 +133,10 @@ var InfiniteScroll = function (_Component) {
         key: 'detachScrollListener',
         value: function detachScrollListener() {
             var scrollEl = window;
-            if (this.props.useWindow == false) {
-                scrollEl = ReactDOM.findDOMNode(this).parentNode;
+            if (this.props.scrollElement) {
+                scrollEl = this.scrollComponent;
+            } else if (this.props.useWindow == false) {
+                scrollEl = this.scrollComponent.parentNode;
             }
 
             scrollEl.removeEventListener('scroll', this.scrollListener);
@@ -155,7 +168,8 @@ InfiniteScroll.propTypes = {
     pageStart: _react.PropTypes.number,
     threshold: _react.PropTypes.number,
     useWindow: _react.PropTypes.bool,
-    isReverse: _react.PropTypes.bool
+    isReverse: _react.PropTypes.bool,
+    scrollElement: _react.PropTypes.object
 };
 InfiniteScroll.defaultProps = {
     element: 'div',
@@ -164,7 +178,8 @@ InfiniteScroll.defaultProps = {
     pageStart: 0,
     threshold: 250,
     useWindow: true,
-    isReverse: false
+    isReverse: false,
+    scrollElement: null
 };
 exports.default = InfiniteScroll;
 module.exports = exports['default'];

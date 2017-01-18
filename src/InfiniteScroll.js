@@ -9,7 +9,8 @@ export default class InfiniteScroll extends Component {
         pageStart: PropTypes.number,
         threshold: PropTypes.number,
         useWindow: PropTypes.bool,
-        isReverse: PropTypes.bool
+        isReverse: PropTypes.bool,
+        scrollElement: PropTypes.object
     };
 
     static defaultProps = {
@@ -19,7 +20,8 @@ export default class InfiniteScroll extends Component {
         pageStart: 0,
         threshold: 250,
         useWindow: true,
-        isReverse: false
+        isReverse: false,
+        scrollElement: null
     };
 
     constructor(props) {
@@ -49,10 +51,19 @@ export default class InfiniteScroll extends Component {
             threshold,
             useWindow,
             isReverse,
+            scrollElement,
             ...props
         } = this.props;
 
-        props.ref = (node) => { this.scrollComponent = node; };
+        if(scrollElement) {
+            props.ref = (node) => {
+                this.scrollComponent = scrollElement;
+            };
+        } else {
+            props.ref = (node) => {
+                this.scrollComponent = node;
+            };
+        }
 
         return React.createElement(element, props, children, hasMore && (loader || this._defaultLoader));
     }
@@ -69,7 +80,12 @@ export default class InfiniteScroll extends Component {
         const scrollEl = window;
 
         let offset;
-        if(this.props.useWindow) {
+        if(this.props.scrollElement) {
+            if (this.props.isReverse) {
+                offset = el.scrollTop;
+            } else
+                offset = el.scrollHeight - el.scrollTop - el.clientHeight;
+        } else if(this.props.useWindow) {
             var scrollTop = (scrollEl.pageYOffset !== undefined) ? scrollEl.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
             if (this.props.isReverse)
                 offset = scrollTop;
@@ -97,7 +113,9 @@ export default class InfiniteScroll extends Component {
         }
 
         let scrollEl = window;
-        if(this.props.useWindow == false) {
+        if(this.props.scrollElement) {
+            scrollEl = this.scrollComponent;
+        } else if(this.props.useWindow == false) {
             scrollEl = this.scrollComponent.parentNode;
         }
 
@@ -111,7 +129,9 @@ export default class InfiniteScroll extends Component {
 
     detachScrollListener() {
         var scrollEl = window;
-        if(this.props.useWindow == false) {
+        if(this.props.scrollElement) {
+            scrollEl = this.scrollComponent;
+        } else if(this.props.useWindow == false) {
             scrollEl = this.scrollComponent.parentNode;
         }
 
@@ -122,7 +142,7 @@ export default class InfiniteScroll extends Component {
     componentWillUnmount() {
         this.detachScrollListener();
     }
-    
+
     // Set a defaut loader for all your `InfiniteScroll` components
     setDefaultLoader(loader) {
         this._defaultLoader = loader;
