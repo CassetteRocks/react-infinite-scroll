@@ -11,6 +11,7 @@ export default class InfiniteScroll extends Component {
         threshold: PropTypes.number,
         useCapture: PropTypes.bool,
         useWindow: PropTypes.bool,
+        ref: PropTypes.func,
     };
 
     static defaultProps = {
@@ -52,10 +53,16 @@ export default class InfiniteScroll extends Component {
             threshold,
             useCapture,
             useWindow,
+            ref,
             ...props
         } = this.props;
 
-        props.ref = (node) => { this.scrollComponent = node; };
+        props.ref = (node) => {
+            this.scrollComponent = node;
+            if (ref) {
+                ref(node)
+            }
+        };
 
         return React.createElement(element, props, children, hasMore && (loader || this._defaultLoader));
     }
@@ -125,7 +132,7 @@ export default class InfiniteScroll extends Component {
     componentWillUnmount() {
         this.detachScrollListener();
     }
-    
+
     // Set a defaut loader for all your `InfiniteScroll` components
     setDefaultLoader(loader) {
         this._defaultLoader = loader;
