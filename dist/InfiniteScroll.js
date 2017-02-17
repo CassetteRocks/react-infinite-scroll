@@ -48,23 +48,26 @@ var InfiniteScroll = function (_Component) {
         value: function render() {
             var _this2 = this;
 
-            var _props = this.props;
-            var children = _props.children;
-            var element = _props.element;
-            var hasMore = _props.hasMore;
-            var initialLoad = _props.initialLoad;
-            var isReverse = _props.isReverse;
-            var loader = _props.loader;
-            var loadMore = _props.loadMore;
-            var pageStart = _props.pageStart;
-            var threshold = _props.threshold;
-            var useCapture = _props.useCapture;
-            var useWindow = _props.useWindow;
-
-            var props = _objectWithoutProperties(_props, ['children', 'element', 'hasMore', 'initialLoad', 'isReverse', 'loader', 'loadMore', 'pageStart', 'threshold', 'useCapture', 'useWindow']);
+            var _props = this.props,
+                children = _props.children,
+                element = _props.element,
+                hasMore = _props.hasMore,
+                initialLoad = _props.initialLoad,
+                isReverse = _props.isReverse,
+                loader = _props.loader,
+                loadMore = _props.loadMore,
+                pageStart = _props.pageStart,
+                threshold = _props.threshold,
+                useCapture = _props.useCapture,
+                useWindow = _props.useWindow,
+                ref = _props.ref,
+                props = _objectWithoutProperties(_props, ['children', 'element', 'hasMore', 'initialLoad', 'isReverse', 'loader', 'loadMore', 'pageStart', 'threshold', 'useCapture', 'useWindow', 'ref']);
 
             props.ref = function (node) {
                 _this2.scrollComponent = node;
+                if (ref) {
+                    ref(node);
+                }
             };
 
             return _react2.default.createElement(element, props, children, hasMore && (loader || this._defaultLoader));
@@ -156,7 +159,8 @@ InfiniteScroll.propTypes = {
     pageStart: _react.PropTypes.number,
     threshold: _react.PropTypes.number,
     useCapture: _react.PropTypes.bool,
-    useWindow: _react.PropTypes.bool
+    useWindow: _react.PropTypes.bool,
+    ref: _react.PropTypes.func
 };
 InfiniteScroll.defaultProps = {
     element: 'div',
