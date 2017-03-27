@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
+import forEach from 'lodash.foreach';
 
 export default class InfiniteScroll extends Component {
     static propTypes = {
@@ -9,6 +11,7 @@ export default class InfiniteScroll extends Component {
         loadMore: PropTypes.func.isRequired,
         pageStart: PropTypes.number,
         threshold: PropTypes.number,
+        touchWindowTop: PropTypes.func,
         useCapture: PropTypes.bool,
         useWindow: PropTypes.bool,
     };
@@ -50,6 +53,7 @@ export default class InfiniteScroll extends Component {
             loadMore,
             pageStart,
             threshold,
+            touchWindowTop,
             useCapture,
             useWindow,
             ...props
@@ -70,6 +74,7 @@ export default class InfiniteScroll extends Component {
     scrollListener() {
         const el = this.scrollComponent;
         const scrollEl = window;
+        const items = findDOMNode(el.firstChild).childNodes;
 
         let offset;
         if(this.props.useWindow) {
@@ -88,10 +93,31 @@ export default class InfiniteScroll extends Component {
         if(offset < Number(this.props.threshold)) {
             this.detachScrollListener();
             // Call loadMore after detachScrollListener to allow for non-async loadMore functions
-            if(typeof this.props.loadMore == 'function') {
+            if(typeof this.props.loadMore === 'function') {
                 this.props.loadMore(this.pageLoaded += 1);
             }
         }
+
+        // Detect the event when item touch window's top
+        if (items.length > 0) {
+            forEach(items, function(item, index){
+                var distance = Math.round(item.getBoundingClientRect().top);
+
+                // Prevent the number error so we give the range that's between 0 to -3
+                if(distance > 0 || distance < -3) {
+                    return true;
+                }
+
+                this.detachScrollListener();
+                // Call touchWindowTop after detachScrollListener to allow for non-async touchWindowTop functions
+                if(typeof this.props.touchWindowTop === 'function') {
+                    this.props.touchWindowTop(item, index);
+                }
+
+                return false;
+            })
+        }
+
     }
 
     attachScrollListener() {
@@ -100,7 +126,7 @@ export default class InfiniteScroll extends Component {
         }
 
         let scrollEl = window;
-        if(this.props.useWindow == false) {
+        if(this.props.useWindow === false) {
             scrollEl = this.scrollComponent.parentNode;
         }
 
@@ -114,7 +140,7 @@ export default class InfiniteScroll extends Component {
 
     detachScrollListener() {
         var scrollEl = window;
-        if(this.props.useWindow == false) {
+        if(this.props.useWindow === false) {
             scrollEl = this.scrollComponent.parentNode;
         }
 
@@ -125,7 +151,7 @@ export default class InfiniteScroll extends Component {
     componentWillUnmount() {
         this.detachScrollListener();
     }
-    
+
     // Set a defaut loader for all your `InfiniteScroll` components
     setDefaultLoader(loader) {
         this._defaultLoader = loader;
