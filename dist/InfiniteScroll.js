@@ -10,6 +10,12 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = require('react-dom');
+
+var _lodash = require('lodash.foreach');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -48,20 +54,20 @@ var InfiniteScroll = function (_Component) {
         value: function render() {
             var _this2 = this;
 
-            var _props = this.props;
-            var children = _props.children;
-            var element = _props.element;
-            var hasMore = _props.hasMore;
-            var initialLoad = _props.initialLoad;
-            var isReverse = _props.isReverse;
-            var loader = _props.loader;
-            var loadMore = _props.loadMore;
-            var pageStart = _props.pageStart;
-            var threshold = _props.threshold;
-            var useCapture = _props.useCapture;
-            var useWindow = _props.useWindow;
-
-            var props = _objectWithoutProperties(_props, ['children', 'element', 'hasMore', 'initialLoad', 'isReverse', 'loader', 'loadMore', 'pageStart', 'threshold', 'useCapture', 'useWindow']);
+            var _props = this.props,
+                children = _props.children,
+                element = _props.element,
+                hasMore = _props.hasMore,
+                initialLoad = _props.initialLoad,
+                isReverse = _props.isReverse,
+                loader = _props.loader,
+                loadMore = _props.loadMore,
+                pageStart = _props.pageStart,
+                threshold = _props.threshold,
+                touchWindowTop = _props.touchWindowTop,
+                useCapture = _props.useCapture,
+                useWindow = _props.useWindow,
+                props = _objectWithoutProperties(_props, ['children', 'element', 'hasMore', 'initialLoad', 'isReverse', 'loader', 'loadMore', 'pageStart', 'threshold', 'touchWindowTop', 'useCapture', 'useWindow']);
 
             props.ref = function (node) {
                 _this2.scrollComponent = node;
@@ -82,6 +88,7 @@ var InfiniteScroll = function (_Component) {
         value: function scrollListener() {
             var el = this.scrollComponent;
             var scrollEl = window;
+            var items = (0, _reactDom.findDOMNode)(el.firstChild).childNodes;
 
             var offset = void 0;
             if (this.props.useWindow) {
@@ -94,9 +101,29 @@ var InfiniteScroll = function (_Component) {
             if (offset < Number(this.props.threshold)) {
                 this.detachScrollListener();
                 // Call loadMore after detachScrollListener to allow for non-async loadMore functions
-                if (typeof this.props.loadMore == 'function') {
+                if (typeof this.props.loadMore === 'function') {
                     this.props.loadMore(this.pageLoaded += 1);
                 }
+            }
+
+            // Detect the event when item touch window's top
+            if (items.length > 0) {
+                (0, _lodash2.default)(items, function (item, index) {
+                    var distance = Math.round(item.getBoundingClientRect().top);
+
+                    // Prevent the number error so we give the range that's between 0 to -3
+                    if (distance > 0 || distance < -3) {
+                        return true;
+                    }
+
+                    this.detachScrollListener();
+                    // Call touchWindowTop after detachScrollListener to allow for non-async touchWindowTop functions
+                    if (typeof this.props.touchWindowTop === 'function') {
+                        this.props.touchWindowTop(item, index);
+                    }
+
+                    return false;
+                });
             }
         }
     }, {
@@ -107,7 +134,7 @@ var InfiniteScroll = function (_Component) {
             }
 
             var scrollEl = window;
-            if (this.props.useWindow == false) {
+            if (this.props.useWindow === false) {
                 scrollEl = this.scrollComponent.parentNode;
             }
 
@@ -122,7 +149,7 @@ var InfiniteScroll = function (_Component) {
         key: 'detachScrollListener',
         value: function detachScrollListener() {
             var scrollEl = window;
-            if (this.props.useWindow == false) {
+            if (this.props.useWindow === false) {
                 scrollEl = this.scrollComponent.parentNode;
             }
 
@@ -155,6 +182,7 @@ InfiniteScroll.propTypes = {
     loadMore: _react.PropTypes.func.isRequired,
     pageStart: _react.PropTypes.number,
     threshold: _react.PropTypes.number,
+    touchWindowTop: _react.PropTypes.func,
     useCapture: _react.PropTypes.bool,
     useWindow: _react.PropTypes.bool
 };
