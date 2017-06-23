@@ -9,7 +9,7 @@
     "url": "git://github.com/CassetteRocks/react-infinite-scroller.git"
   },
   "scripts": {
-    "build": "mkdir -p dist && babel src/InfiniteScroll.js --out-file dist/InfiniteScroll.js",
+    "build": "mkdir -p dist && babel src/InfiniteScroll.js --out-file dist/InfiniteScroll.js && babel src/InviewSensor.js --out-file dist/InviewSensor.js",
     "prepublish": "npm run build",
     "test": "nyc npm run spec",
     "spec": "_mocha -R spec ./test/test_helper.js --recursive test/*_test.js",

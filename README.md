@@ -7,7 +7,7 @@ React Infinite Scroller
 [![npm](https://img.shields.io/npm/v/react-infinite-scroller.svg?style=flat-square)](https://www.npmjs.com/package/react-infinite-scroller)
 [![npm](https://img.shields.io/npm/l/react-infinite-scroller.svg?style=flat-square)](https://github.com/CassetteRocks/react-infinite-scroller/blob/master/LICENSE)
 
-Infinitely load content using a React Component. This fork maintains a simple, lightweight infinite scroll package that supports both `window` and scrollable elements.
+Infinitely load content and Inview sensor using a React Component. This fork maintains a simple, lightweight infinite scroll package that supports both `window` and scrollable elements.
 
 - [Demo](https://cassetterocks.github.io/react-infinite-scroller/demo/)
 - [Demo Source](https://github.com/CassetteRocks/react-infinite-scroller/blob/master/docs/src/index.js)
@@ -24,9 +24,10 @@ yarn add react-infinite-scroller
 ## How to use
 
 ```js
-import InfiniteScroll from 'react-infinite-scroller';
+import { InfiniteScroll, InviewSensor } from 'react-infinite-scroller';
 ```
 
+## InfiniteScroll
 ### Window scroll events
 
 ```js
@@ -56,7 +57,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 </div>
 ```
 
-## Props
+### Props
 
 | Name             | Type          | Default    | Description|
 |:----             |:----          |:----       |:----|
@@ -69,3 +70,35 @@ import InfiniteScroll from 'react-infinite-scroller';
 | `threshold`      | `Number`     | `250`      | The distance in pixels before the end of the items that will trigger a call to `loadMore`.|
 | `useCapture`     | `Boolean`     | `false`     | Proxy to the `useCapture` option of the added event listeners.|
 | `useWindow`      | `Boolean`     | `true`     | Add scroll listeners to the window, or else, the component's `parentNode`.|
+
+## InviewSensor
+InviweSensor component notifies you when it goes in or out of the current viewport. InviewSensor component must be placed inside of InfiniteScroll component and it shares the same scrollable element.
+
+The scrollable element is passed to InviewSensor via its context of InfiniteScroll component. InviewSensor is inspired by [React Visibility Sensor](https://github.com/EugeneHlushko/react-visibility-sensor).
+
+### Example
+
+```js
+<InfiniteScroll
+    pageStart={0}
+    loadMore={loadFunc}
+    hasMore={true || false}
+    loader={<div className="loader">Loading ...</div>}
+>
+  {items.map((item)=>
+    <div>
+      some contents here.
+      <InviewSensor onChange={onChange} />
+    </div>
+  )}
+</InfiniteScroll>
+```
+
+### Props
+
+| Name             | Type          | Default    | Description|
+|:----             |:----          |:----       |:----|
+| `onChange`       | `Function`    | required   | callback for whenever the element changes from being within the window viewport or not. Function is called with 1 argument (isVisible: boolean) |
+| `active`         | `Boolean`     | `true`     | boolean flag for enabling / disabling the sensor. When active !== true the sensor will not fire the onChange callback. |
+
+

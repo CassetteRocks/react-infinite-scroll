@@ -33,6 +33,16 @@ export default class InfiniteScroll extends Component {
     loader: null,
   };
 
+  static childContextTypes = {
+    infiniteScrollComponent: PropTypes.object,
+  };
+
+  getChildContext() {
+    return {
+      infiniteScrollComponent: this
+    }
+  }
+
   constructor(props) {
     super(props);
 
@@ -41,11 +51,30 @@ export default class InfiniteScroll extends Component {
 
   componentDidMount() {
     this.pageLoaded = this.props.pageStart;
+    this.scrollWindow = this.props.useWindow === false ? this.scrollComponent.parentNode : window;
     this.attachScrollListener();
+  }
+
+  componentWillUpdate() {
+    if (this.props.isReverse) {
+      var scrollEl = window;
+      if (this.props.useWindow === false) {
+        scrollEl = this.scrollComponent.parentNode;
+      }
+      this.scrollHeight = scrollEl.scrollHeight;
+      this.scrollTop = scrollEl.scrollTop;
+    }
   }
 
   componentDidUpdate() {
     this.attachScrollListener();
+    if (this.props.isReverse) {
+      var scrollEl = window;
+      if (this.props.useWindow === false) {
+        scrollEl = this.scrollComponent.parentNode;
+      }
+      scrollEl.scrollTop = this.scrollTop + (scrollEl.scrollHeight - this.scrollHeight);
+    }
   }
 
   componentWillUnmount() {
@@ -147,8 +176,8 @@ export default class InfiniteScroll extends Component {
     return React.createElement(
         element,
         props,
-        children,
-        hasMore && (loader || this.defaultLoader),
+        isReverse ? hasMore && (loader || this.defaultLoader) : children,
+        isReverse ? children : hasMore && (loader || this.defaultLoader),
     );
   }
 }

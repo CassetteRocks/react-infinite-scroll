@@ -27,6 +27,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var InfiniteScroll = function (_Component) {
   _inherits(InfiniteScroll, _Component);
 
+  _createClass(InfiniteScroll, [{
+    key: 'getChildContext',
+    value: function getChildContext() {
+      return {
+        infiniteScrollComponent: this
+      };
+    }
+  }]);
+
   function InfiniteScroll(props) {
     _classCallCheck(this, InfiniteScroll);
 
@@ -40,12 +49,32 @@ var InfiniteScroll = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.pageLoaded = this.props.pageStart;
+      this.scrollWindow = this.props.useWindow === false ? this.scrollComponent.parentNode : window;
       this.attachScrollListener();
+    }
+  }, {
+    key: 'componentWillUpdate',
+    value: function componentWillUpdate() {
+      if (this.props.isReverse) {
+        var scrollEl = window;
+        if (this.props.useWindow === false) {
+          scrollEl = this.scrollComponent.parentNode;
+        }
+        this.scrollHeight = scrollEl.scrollHeight;
+        this.scrollTop = scrollEl.scrollTop;
+      }
     }
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
       this.attachScrollListener();
+      if (this.props.isReverse) {
+        var scrollEl = window;
+        if (this.props.useWindow === false) {
+          scrollEl = this.scrollComponent.parentNode;
+        }
+        scrollEl.scrollTop = this.scrollTop + (scrollEl.scrollHeight - this.scrollHeight);
+      }
     }
   }, {
     key: 'componentWillUnmount',
@@ -149,7 +178,7 @@ var InfiniteScroll = function (_Component) {
         _this2.scrollComponent = node;
       };
 
-      return _react2.default.createElement(element, props, children, hasMore && (loader || this.defaultLoader));
+      return _react2.default.createElement(element, props, isReverse ? hasMore && (loader || this.defaultLoader) : children, isReverse ? children : hasMore && (loader || this.defaultLoader));
     }
   }]);
 
@@ -179,6 +208,9 @@ InfiniteScroll.defaultProps = {
   isReverse: false,
   useCapture: false,
   loader: null
+};
+InfiniteScroll.childContextTypes = {
+  infiniteScrollComponent: _propTypes2.default.object
 };
 exports.default = InfiniteScroll;
 module.exports = exports['default'];
