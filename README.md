@@ -34,6 +34,7 @@ import InfiniteScroll from 'react-infinite-scroller';
     pageStart={0}
     loadMore={loadFunc}
     hasMore={true || false}
+    isLoading={true || false}
     loader={<div className="loader">Loading ...</div>}
 >
     {items} // <-- This is the content you want to load
@@ -48,6 +49,7 @@ import InfiniteScroll from 'react-infinite-scroller';
         pageStart={0}
         loadMore={loadFunc}
         hasMore={true || false}
+        isLoading={true || false}
         loader={<div className="loader">Loading ...</div>}
         useWindow={false}
     >
@@ -62,6 +64,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 |:----             |:----          |:----       |:----|
 | `element`        | `String`      | `'div'`    | Name of the element that the component should render as.|
 | `hasMore`        | `Boolean`     | `false`    | Whether there are more items to be loaded. Event listeners are removed if `false`.|
+| `isLoading`        | `Boolean`     | `false`    | Whether there are a pending request. New items will not be requested if `true`.|
 | `initialLoad`    | `Boolean`     | `true`     | Whether the component should load the first set of items.|
 | `isReverse`      | `Boolean`     | `false`    | Whether new items should be loaded when user scrolls to the top of the scrollable area.|
 | `loadMore`       | `Function`    |            | A callback when more items are requested by the user.|

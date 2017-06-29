@@ -74,7 +74,7 @@ var InfiniteScroll = function (_Component) {
   }, {
     key: 'attachScrollListener',
     value: function attachScrollListener() {
-      if (!this.props.hasMore) {
+      if (!this.props.hasMore || this.props.isLoading) {
         return;
       }
 
@@ -134,7 +134,7 @@ var InfiniteScroll = function (_Component) {
       var _props = this.props,
           children = _props.children,
           element = _props.element,
-          hasMore = _props.hasMore,
+          isLoading = _props.isLoading,
           initialLoad = _props.initialLoad,
           isReverse = _props.isReverse,
           loader = _props.loader,
@@ -143,17 +143,17 @@ var InfiniteScroll = function (_Component) {
           threshold = _props.threshold,
           useCapture = _props.useCapture,
           useWindow = _props.useWindow,
-          props = _objectWithoutProperties(_props, ['children', 'element', 'hasMore', 'initialLoad', 'isReverse', 'loader', 'loadMore', 'pageStart', 'threshold', 'useCapture', 'useWindow']);
+          props = _objectWithoutProperties(_props, ['children', 'element', 'isLoading', 'initialLoad', 'isReverse', 'loader', 'loadMore', 'pageStart', 'threshold', 'useCapture', 'useWindow']);
 
       props.ref = function (node) {
         _this2.scrollComponent = node;
       };
 
       if (isReverse) {
-        return _react2.default.createElement(element, props, hasMore && (loader || this.defaultLoader), children);
+        return _react2.default.createElement(element, props, isLoading && (loader || this.defaultLoader), children);
       }
 
-      return _react2.default.createElement(element, props, children, hasMore && (loader || this.defaultLoader));
+      return _react2.default.createElement(element, props, children, isLoading && (loader || this.defaultLoader));
     }
   }]);
 
@@ -163,6 +163,7 @@ var InfiniteScroll = function (_Component) {
 InfiniteScroll.propTypes = {
   element: _propTypes2.default.string,
   hasMore: _propTypes2.default.bool,
+  isLoading: _propTypes2.default.bool,
   initialLoad: _propTypes2.default.bool,
   isReverse: _propTypes2.default.bool,
   loadMore: _propTypes2.default.func.isRequired,
@@ -176,6 +177,7 @@ InfiniteScroll.propTypes = {
 InfiniteScroll.defaultProps = {
   element: 'div',
   hasMore: false,
+  isLoading: false,
   initialLoad: true,
   pageStart: 0,
   threshold: 250,
