@@ -7,6 +7,7 @@ export default class InfiniteScroll extends Component {
   static propTypes = {
     element: PropTypes.string,
     hasMore: PropTypes.bool,
+    isLoading: PropTypes.bool,
     initialLoad: PropTypes.bool,
     isReverse: PropTypes.bool,
     loadMore: PropTypes.func.isRequired,
@@ -24,6 +25,7 @@ export default class InfiniteScroll extends Component {
   static defaultProps = {
     element: 'div',
     hasMore: false,
+    isLoading: false,
     initialLoad: true,
     pageStart: 0,
     threshold: 250,
@@ -68,7 +70,7 @@ export default class InfiniteScroll extends Component {
   }
 
   attachScrollListener() {
-    if (!this.props.hasMore) {
+    if (!this.props.hasMore || this.props.isLoading) {
       return;
     }
 
@@ -128,7 +130,7 @@ export default class InfiniteScroll extends Component {
     const {
       children,
       element,
-      hasMore,
+      isLoading,
       initialLoad,
       isReverse,
       loader,
@@ -148,7 +150,7 @@ export default class InfiniteScroll extends Component {
       return React.createElement(
           element,
           props,
-          hasMore && (loader || this.defaultLoader),
+          isLoading && (loader || this.defaultLoader),
           children,
       );
     }
@@ -157,7 +159,7 @@ export default class InfiniteScroll extends Component {
         element,
         props,
         children,
-        hasMore && (loader || this.defaultLoader),
+        isLoading && (loader || this.defaultLoader),
     );
   }
 }
