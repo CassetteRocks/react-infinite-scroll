@@ -69,4 +69,4 @@ import InfiniteScroll from 'react-infinite-scroller';
 | `threshold`      | `Number`     | `250`      | The distance in pixels before the end of the items that will trigger a call to `loadMore`.|
 | `useCapture`     | `Boolean`     | `false`     | Proxy to the `useCapture` option of the added event listeners.|
 | `useWindow`      | `Boolean`     | `true`     | Add scroll listeners to the window, or else, the component's `parentNode`.|
-| `relativeElement`| `String`     |            | Add scroll listeners to the relative parent dom element. overrides `useWindow`
+| `relativeElement`| `String`     |            | Add scroll listeners to the relative parent HTML Element. if defeined, overrides `useWindow`
