@@ -185,7 +185,7 @@ InfiniteScroll.propTypes = {
   threshold: _propTypes2.default.number,
   useCapture: _propTypes2.default.bool,
   useWindow: _propTypes2.default.bool,
-  relativeElement: _propTypes2.default.string,
+  relativeElement: _propTypes2.default.object,
   children: _propTypes2.default.oneOfType([_propTypes2.default.object, _propTypes2.default.array]).isRequired,
   loader: _propTypes2.default.object
 };

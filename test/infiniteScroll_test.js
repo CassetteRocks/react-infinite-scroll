@@ -1,7 +1,7 @@
 import React from 'react';
-import { mount } from 'enzyme';
-import { expect } from 'chai';
-import { stub, spy } from 'sinon';
+import {mount} from 'enzyme';
+import {expect} from 'chai';
+import {stub, spy} from 'sinon';
 import InfiniteScroll from '../src/InfiniteScroll';
 
 describe('InfiniteScroll component', () => {

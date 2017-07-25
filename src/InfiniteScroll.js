@@ -14,7 +14,7 @@ export default class InfiniteScroll extends Component {
     threshold: PropTypes.number,
     useCapture: PropTypes.bool,
     useWindow: PropTypes.bool,
-    relativeElement: PropTypes.string,
+    relativeElement: PropTypes.object,
     children: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.array,
