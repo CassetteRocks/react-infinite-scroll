@@ -15,6 +15,7 @@ export default class InfiniteScroll extends Component {
     threshold: PropTypes.number,
     useCapture: PropTypes.bool,
     useWindow: PropTypes.bool,
+    relativeElement: PropTypes.object,
     children: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.array,
@@ -32,6 +33,7 @@ export default class InfiniteScroll extends Component {
     isReverse: false,
     useCapture: false,
     loader: null,
+    relativeElement: null
   };
 
   constructor(props) {
@@ -60,7 +62,9 @@ export default class InfiniteScroll extends Component {
 
   detachScrollListener() {
     let scrollEl = window;
-    if (this.props.useWindow === false) {
+    if (this.props.relativeElement) {
+      scrollEl = this.props.relativeElement;
+    } else if (this.props.useWindow === false) {
       scrollEl = this.scrollComponent.parentNode;
     }
 
@@ -74,7 +78,9 @@ export default class InfiniteScroll extends Component {
     }
 
     let scrollEl = window;
-    if (this.props.useWindow === false) {
+    if (this.props.relativeElement) {
+      scrollEl = this.props.relativeElement;
+    } else if (this.props.useWindow === false) {
       scrollEl = this.scrollComponent.parentNode;
     }
 
@@ -91,7 +97,13 @@ export default class InfiniteScroll extends Component {
     const scrollEl = window;
 
     let offset;
-    if (this.props.useWindow) {
+    if (this.props.relativeElement) {
+     if (this.props.isReverse) {
+        offset = this.props.relativeElement
+      } else {
+        offset = el.scrollHeight - this.props.relativeElement.scrollTop - this.props.relativeElement.clientHeight;
+      }
+    } else if (this.props.useWindow) {
       const scrollTop = (scrollEl.pageYOffset !== undefined) ?
        scrollEl.pageYOffset :
        (document.documentElement || document.body.parentNode || document.body).scrollTop;
@@ -139,6 +151,7 @@ export default class InfiniteScroll extends Component {
       threshold,
       useCapture,
       useWindow,
+      relativeElement,
       ...props
     } = this.props;
 
