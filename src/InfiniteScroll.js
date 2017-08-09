@@ -106,7 +106,7 @@ export default class InfiniteScroll extends Component {
     } else if (this.props.isReverse) {
       offset = el.parentNode.scrollTop;
     } else {
-      offset = el.scrollHeight - el.parentNode.scrollTop - el.parentNode.clientHeight;
+      offset = el.parentNode.scrollHeight - el.parentNode.clientHeight - el.parentNode.scrollTop;
     }
 
     if (offset < Number(this.props.threshold)) {
