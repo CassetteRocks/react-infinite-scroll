@@ -61,6 +61,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 | Name             | Type          | Default    | Description|
 |:----             |:----          |:----       |:----|
 | `element`        | `String`      | `'div'`    | Name of the element that the component should render as.|
+| `className`      | `String`      | `'InfiniteScroll'`    | The `className` property to use on the rendered element.|
 | `hasMore`        | `Boolean`     | `false`    | Whether there are more items to be loaded. Event listeners are removed if `false`.|
 | `initialLoad`    | `Boolean`     | `true`     | Whether the component should load the first set of items.|
 | `isReverse`      | `Boolean`     | `false`    | Whether new items should be loaded when user scrolls to the top of the scrollable area.|

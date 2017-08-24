@@ -9,6 +9,7 @@ export default class InfiniteScroll extends Component {
       .oneOfType([PropTypes.object, PropTypes.array])
       .isRequired,
     element: PropTypes.string,
+    className: PropTypes.string,
     hasMore: PropTypes.bool,
     initialLoad: PropTypes.bool,
     isReverse: PropTypes.bool,
@@ -23,6 +24,7 @@ export default class InfiniteScroll extends Component {
 
   static defaultProps = {
     element: 'div',
+    className: 'InfiniteScroll',
     hasMore: false,
     initialLoad: true,
     pageStart: 0,
