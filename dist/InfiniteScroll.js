@@ -14,6 +14,14 @@ var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
+var _lodash = require('lodash.throttle');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _lodash3 = require('lodash.debounce');
+
+var _lodash4 = _interopRequireDefault(_lodash3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -33,6 +41,10 @@ var InfiniteScroll = function (_Component) {
     var _this = _possibleConstructorReturn(this, (InfiniteScroll.__proto__ || Object.getPrototypeOf(InfiniteScroll)).call(this, props));
 
     _this.scrollListener = _this.scrollListener.bind(_this);
+    _this.throttledScrollListener = (0, _lodash2.default)(_this.scrollListener, 1000, {
+      leading: false
+    });
+    _this.debouncedScrollListener = (0, _lodash4.default)(_this.scrollListener, 1000);
     return _this;
   }
 
@@ -68,8 +80,8 @@ var InfiniteScroll = function (_Component) {
         scrollEl = this.scrollComponent.parentNode;
       }
 
-      scrollEl.removeEventListener('scroll', this.scrollListener, this.props.useCapture);
-      scrollEl.removeEventListener('resize', this.scrollListener, this.props.useCapture);
+      scrollEl.removeEventListener('scroll', this.throttledScrollListener, this.props.useCapture);
+      scrollEl.removeEventListener('resize', this.debouncedScrollListener, this.props.useCapture);
     }
   }, {
     key: 'attachScrollListener',
@@ -83,8 +95,8 @@ var InfiniteScroll = function (_Component) {
         scrollEl = this.scrollComponent.parentNode;
       }
 
-      scrollEl.addEventListener('scroll', this.scrollListener, this.props.useCapture);
-      scrollEl.addEventListener('resize', this.scrollListener, this.props.useCapture);
+      scrollEl.addEventListener('scroll', this.throttledScrollListener, this.props.useCapture);
+      scrollEl.addEventListener('resize', this.debouncedScrollListener, this.props.useCapture);
 
       if (this.props.initialLoad) {
         this.scrollListener();

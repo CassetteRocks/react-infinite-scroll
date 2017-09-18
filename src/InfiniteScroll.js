@@ -2,6 +2,8 @@ import React, {
   Component,
 } from 'react';
 import PropTypes from 'prop-types';
+import throttle from 'lodash.throttle';
+import debounce from 'lodash.debounce';
 
 export default class InfiniteScroll extends Component {
   static propTypes = {
@@ -38,6 +40,10 @@ export default class InfiniteScroll extends Component {
     super(props);
 
     this.scrollListener = this.scrollListener.bind(this);
+    this.throttledScrollListener = throttle(this.scrollListener, 1000, {
+      leading: false,
+    });
+    this.debouncedScrollListener = debounce(this.scrollListener, 1000);
   }
 
   componentDidMount() {
@@ -64,8 +70,8 @@ export default class InfiniteScroll extends Component {
       scrollEl = this.scrollComponent.parentNode;
     }
 
-    scrollEl.removeEventListener('scroll', this.scrollListener, this.props.useCapture);
-    scrollEl.removeEventListener('resize', this.scrollListener, this.props.useCapture);
+    scrollEl.removeEventListener('scroll', this.throttledScrollListener, this.props.useCapture);
+    scrollEl.removeEventListener('resize', this.debouncedScrollListener, this.props.useCapture);
   }
 
   attachScrollListener() {
@@ -78,8 +84,8 @@ export default class InfiniteScroll extends Component {
       scrollEl = this.scrollComponent.parentNode;
     }
 
-    scrollEl.addEventListener('scroll', this.scrollListener, this.props.useCapture);
-    scrollEl.addEventListener('resize', this.scrollListener, this.props.useCapture);
+    scrollEl.addEventListener('scroll', this.throttledScrollListener, this.props.useCapture);
+    scrollEl.addEventListener('resize', this.debouncedScrollListener, this.props.useCapture);
 
     if (this.props.initialLoad) {
       this.scrollListener();

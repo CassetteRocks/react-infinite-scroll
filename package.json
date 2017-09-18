@@ -26,6 +26,8 @@
     "url": "https://github.com/CassetteRocks/react-infinite-scroller/issues"
   },
   "dependencies": {
+    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
     "prop-types": "^15.5.8"
   },
   "peerDependencies": {
