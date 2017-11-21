@@ -156,7 +156,11 @@ var InfiniteScroll = (function(_Component) {
 
         var scrollEl = window;
         if (this.props.useWindow === false) {
-          scrollEl = this.scrollComponent.parentNode;
+          if (this.props.scrollNode !== false) {
+            scrollEl = document.querySelector(this.props.scrollNode);
+          } else {
+            scrollEl = this.scrollComponent.parentNode;
+          }
         }
 
         scrollEl.addEventListener(
@@ -240,6 +244,7 @@ var InfiniteScroll = (function(_Component) {
           loadMore = _props.loadMore,
           pageStart = _props.pageStart,
           ref = _props.ref,
+          scrollNode = _props.scrollNode,
           threshold = _props.threshold,
           useCapture = _props.useCapture,
           useWindow = _props.useWindow,
@@ -253,6 +258,7 @@ var InfiniteScroll = (function(_Component) {
             'loadMore',
             'pageStart',
             'ref',
+            'scrollNode',
             'threshold',
             'useCapture',
             'useWindow',
@@ -294,6 +300,7 @@ InfiniteScroll.propTypes = {
     _propTypes2.default.array,
   ]).isRequired,
   element: _propTypes2.default.string,
+  scrollNode: _propTypes2.default.string,
   hasMore: _propTypes2.default.bool,
   initialLoad: _propTypes2.default.bool,
   isReverse: _propTypes2.default.bool,
@@ -311,6 +318,7 @@ InfiniteScroll.defaultProps = {
   initialLoad: true,
   pageStart: 0,
   ref: null,
+  scrollNode: false,
   threshold: 250,
   useWindow: true,
   isReverse: false,
