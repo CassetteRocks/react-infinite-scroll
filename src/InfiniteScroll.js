@@ -82,9 +82,13 @@ export default class InfiniteScroll extends Component {
 
     let scrollEl = window;
     if (this.props.useWindow === false) {
+      // We passed a custom scrollNode selector
       if (this.props.scrollNode !== false) {
         scrollEl = document.querySelector(this.props.scrollNode);
-      } else {
+      }
+
+      // Unable to find the scrollNode element in the DOM
+      if (scrollEl === window) {
         scrollEl = this.scrollComponent.parentNode;
       }
     }
