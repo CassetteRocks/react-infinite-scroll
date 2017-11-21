@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 export default class InfiniteScroll extends Component {
   static propTypes = {
-    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
-      .isRequired,
+    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
     element: PropTypes.string,
+    scrollNode: PropTypes.instanceOf(Element),
     hasMore: PropTypes.bool,
     initialLoad: PropTypes.bool,
     isReverse: PropTypes.bool,
@@ -24,6 +24,7 @@ export default class InfiniteScroll extends Component {
     initialLoad: true,
     pageStart: 0,
     ref: null,
+    scrollNode: false,
     threshold: 250,
     useWindow: true,
     isReverse: false,
@@ -80,7 +81,7 @@ export default class InfiniteScroll extends Component {
 
     let scrollEl = window;
     if (this.props.useWindow === false) {
-      scrollEl = this.scrollComponent.parentNode;
+      scrollEl = this.props.scrollNode || this.scrollComponent.parentNode;
     }
 
     scrollEl.addEventListener(
