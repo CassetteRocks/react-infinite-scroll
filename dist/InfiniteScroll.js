@@ -128,26 +128,6 @@ var InfiniteScroll = (function(_Component) {
       },
     },
     {
-      key: 'detachScrollListener',
-      value: function detachScrollListener() {
-        var scrollEl = window;
-        if (this.props.useWindow === false) {
-          scrollEl = this.scrollComponent.parentNode;
-        }
-
-        scrollEl.removeEventListener(
-          'scroll',
-          this.scrollListener,
-          this.props.useCapture,
-        );
-        scrollEl.removeEventListener(
-          'resize',
-          this.scrollListener,
-          this.props.useCapture,
-        );
-      },
-    },
-    {
       key: 'getScrollEl',
       value: function getScrollEl() {
         var scrollEl = window;
@@ -164,6 +144,23 @@ var InfiniteScroll = (function(_Component) {
         }
 
         return scrollEl;
+      },
+    },
+    {
+      key: 'detachScrollListener',
+      value: function detachScrollListener() {
+        var scrollEl = this.getScrollEl();
+
+        scrollEl.removeEventListener(
+          'scroll',
+          this.scrollListener,
+          this.props.useCapture,
+        );
+        scrollEl.removeEventListener(
+          'resize',
+          this.scrollListener,
+          this.props.useCapture,
+        );
       },
     },
     {

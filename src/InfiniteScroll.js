@@ -57,24 +57,6 @@ export default class InfiniteScroll extends Component {
     this.defaultLoader = loader;
   }
 
-  detachScrollListener() {
-    let scrollEl = window;
-    if (this.props.useWindow === false) {
-      scrollEl = this.scrollComponent.parentNode;
-    }
-
-    scrollEl.removeEventListener(
-      'scroll',
-      this.scrollListener,
-      this.props.useCapture,
-    );
-    scrollEl.removeEventListener(
-      'resize',
-      this.scrollListener,
-      this.props.useCapture,
-    );
-  }
-
   getScrollEl() {
     let scrollEl = window;
     if (this.props.useWindow === false) {
@@ -90,6 +72,21 @@ export default class InfiniteScroll extends Component {
     }
 
     return scrollEl;
+  }
+
+  detachScrollListener() {
+    const scrollEl = this.getScrollEl();
+
+    scrollEl.removeEventListener(
+      'scroll',
+      this.scrollListener,
+      this.props.useCapture,
+    );
+    scrollEl.removeEventListener(
+      'resize',
+      this.scrollListener,
+      this.props.useCapture,
+    );
   }
 
   attachScrollListener() {
