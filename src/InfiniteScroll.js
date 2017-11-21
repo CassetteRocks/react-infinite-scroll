@@ -66,7 +66,7 @@ export default class InfiniteScroll extends Component {
       }
 
       // Unable to find the scrollNode element in the DOM
-      if (scrollEl === window) {
+      if (scrollEl === window || scrollEl === null) {
         scrollEl = this.scrollComponent.parentNode;
       }
     }
