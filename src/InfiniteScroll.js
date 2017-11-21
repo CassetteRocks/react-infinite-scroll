@@ -153,6 +153,7 @@ export default class InfiniteScroll extends Component {
       loadMore,
       pageStart,
       ref,
+      scrollNode,
       threshold,
       useCapture,
       useWindow,
