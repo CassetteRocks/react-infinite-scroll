@@ -148,12 +148,8 @@ var InfiniteScroll = (function(_Component) {
       },
     },
     {
-      key: 'attachScrollListener',
-      value: function attachScrollListener() {
-        if (!this.props.hasMore) {
-          return;
-        }
-
+      key: 'getScrollEl',
+      value: function getScrollEl() {
         var scrollEl = window;
         if (this.props.useWindow === false) {
           // We passed a custom scrollNode selector
@@ -166,6 +162,18 @@ var InfiniteScroll = (function(_Component) {
             scrollEl = this.scrollComponent.parentNode;
           }
         }
+
+        return scrollEl;
+      },
+    },
+    {
+      key: 'attachScrollListener',
+      value: function attachScrollListener() {
+        if (!this.props.hasMore) {
+          return;
+        }
+
+        var scrollEl = this.getScrollEl();
 
         scrollEl.addEventListener(
           'scroll',
@@ -187,7 +195,7 @@ var InfiniteScroll = (function(_Component) {
       key: 'scrollListener',
       value: function scrollListener() {
         var el = this.scrollComponent;
-        var scrollEl = window;
+        var scrollEl = this.getScrollEl();
 
         var offset = void 0;
         if (this.props.useWindow) {
@@ -207,12 +215,9 @@ var InfiniteScroll = (function(_Component) {
               (el.offsetHeight - scrollTop - window.innerHeight);
           }
         } else if (this.props.isReverse) {
-          offset = el.parentNode.scrollTop;
+          offset = scrollEl.scrollTop;
         } else {
-          offset =
-            el.scrollHeight -
-            el.parentNode.scrollTop -
-            el.parentNode.clientHeight;
+          offset = el.scrollHeight - scrollEl.scrollTop - scrollEl.clientHeight;
         }
 
         if (offset < Number(this.props.threshold)) {
