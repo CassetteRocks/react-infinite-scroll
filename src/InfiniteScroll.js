@@ -101,6 +101,7 @@ export default class InfiniteScroll extends Component {
       'mousewheel',
       this.mousewheelListener,
       this.props.useCapture,
+      { passive: true },
     );
     scrollEl.addEventListener(
       'scroll',
@@ -115,14 +116,6 @@ export default class InfiniteScroll extends Component {
 
     if (this.props.initialLoad) {
       this.scrollListener();
-    }
-  }
-
-  mousewheelListener(e) {
-    // Prevents Chrome hangups
-    // See: https://stackoverflow.com/questions/47524205/random-high-content-download-time-in-chrome/47684257#47684257
-    if (e.deltaY === 1) {
-      e.preventDefault();
     }
   }
 
