@@ -179,6 +179,7 @@ var InfiniteScroll = (function(_Component) {
           'mousewheel',
           this.mousewheelListener,
           this.props.useCapture,
+          { passive: true },
         );
         scrollEl.addEventListener(
           'scroll',
@@ -193,16 +194,6 @@ var InfiniteScroll = (function(_Component) {
 
         if (this.props.initialLoad) {
           this.scrollListener();
-        }
-      },
-    },
-    {
-      key: 'mousewheelListener',
-      value: function mousewheelListener(e) {
-        // Prevents Chrome hangups
-        // See: https://stackoverflow.com/questions/47524205/random-high-content-download-time-in-chrome/47684257#47684257
-        if (e.deltaY === 1) {
-          e.preventDefault();
         }
       },
     },
