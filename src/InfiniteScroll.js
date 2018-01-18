@@ -43,6 +43,7 @@ export default class InfiniteScroll extends Component {
   }
 
   componentDidUpdate() {
+    this.detachScrollListener();
     this.attachScrollListener();
   }
 
