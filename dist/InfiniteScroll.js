@@ -103,13 +103,13 @@ var InfiniteScroll = (function(_Component) {
     {
       key: 'componentDidMount',
       value: function componentDidMount() {
-        this.pageLoaded = this.props.pageStart;
         this.attachScrollListener();
       },
     },
     {
       key: 'componentDidUpdate',
       value: function componentDidUpdate() {
+        this.pageLoaded = this.props.pageStart;
         this.attachScrollListener();
       },
     },
