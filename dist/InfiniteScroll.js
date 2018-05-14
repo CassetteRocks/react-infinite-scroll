@@ -109,7 +109,10 @@ var InfiniteScroll = (function(_Component) {
     {
       key: 'componentDidUpdate',
       value: function componentDidUpdate() {
-        this.pageLoaded = this.props.pageStart;
+        if (this.props.resetPage()) {
+          this.pageLoaded = this.props.pageStart;
+          this.props.resetPageCompleted();
+        }
         this.attachScrollListener();
       },
     },
@@ -329,6 +332,8 @@ InfiniteScroll.propTypes = {
   threshold: _propTypes2.default.number,
   useCapture: _propTypes2.default.bool,
   useWindow: _propTypes2.default.bool,
+  resetPage: _propTypes2.default.func,
+  resetPageCompleted: _propTypes2.default.func,
 };
 InfiniteScroll.defaultProps = {
   element: 'div',

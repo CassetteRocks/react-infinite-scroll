@@ -15,6 +15,8 @@ export default class InfiniteScroll extends Component {
     threshold: PropTypes.number,
     useCapture: PropTypes.bool,
     useWindow: PropTypes.bool,
+    resetPage: PropTypes.func,
+    resetPageCompleted: PropTypes.func,
   };
 
   static defaultProps = {
@@ -41,7 +43,10 @@ export default class InfiniteScroll extends Component {
   }
 
   componentDidUpdate() {
-    this.pageLoaded = this.props.pageStart;
+    if (this.props.resetPage()) {
+      this.pageLoaded = this.props.pageStart;
+      this.props.resetPageCompleted();
+    }
     this.attachScrollListener();
   }
 
