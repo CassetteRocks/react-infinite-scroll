@@ -117,7 +117,6 @@ var InfiniteScroll = (function(_Component) {
       key: 'componentWillUnmount',
       value: function componentWillUnmount() {
         this.detachScrollListener();
-        this.detachMousewheelListener();
       },
 
       // Set a defaut loader for all your `InfiniteScroll` components
@@ -129,38 +128,41 @@ var InfiniteScroll = (function(_Component) {
       },
     },
     {
-      key: 'detachMousewheelListener',
-      value: function detachMousewheelListener() {
+      key: 'getScrollElement',
+      value: function getScrollElement() {
         var scrollEl = window;
-        if (this.props.useWindow === false) {
+
+        if (this.props.scrollElementSelector) {
+          scrollEl = document.querySelector(this.props.scrollElementSelector);
+        } else if (this.props.useWindow === false) {
           scrollEl = this.scrollComponent.parentNode;
         }
 
-        scrollEl.removeEventListener(
-          'mousewheel',
-          this.mousewheelListener,
-          this.props.useCapture,
-        );
+        return scrollEl;
       },
     },
     {
       key: 'detachScrollListener',
       value: function detachScrollListener() {
-        var scrollEl = window;
-        if (this.props.useWindow === false) {
-          scrollEl = this.scrollComponent.parentNode;
-        }
+        var scrollEl = this.getScrollElement();
 
-        scrollEl.removeEventListener(
-          'scroll',
-          this.scrollListener,
-          this.props.useCapture,
-        );
-        scrollEl.removeEventListener(
-          'resize',
-          this.scrollListener,
-          this.props.useCapture,
-        );
+        if (scrollEl) {
+          scrollEl.removeEventListener(
+            'mousewheel',
+            this.mousewheelListener,
+            this.props.useCapture,
+          );
+          scrollEl.removeEventListener(
+            'scroll',
+            this.scrollListener,
+            this.props.useCapture,
+          );
+          scrollEl.removeEventListener(
+            'resize',
+            this.scrollListener,
+            this.props.useCapture,
+          );
+        }
       },
     },
     {
@@ -170,26 +172,25 @@ var InfiniteScroll = (function(_Component) {
           return;
         }
 
-        var scrollEl = window;
-        if (this.props.useWindow === false) {
-          scrollEl = this.scrollComponent.parentNode;
-        }
+        var scrollEl = this.getScrollElement();
 
-        scrollEl.addEventListener(
-          'mousewheel',
-          this.mousewheelListener,
-          this.props.useCapture,
-        );
-        scrollEl.addEventListener(
-          'scroll',
-          this.scrollListener,
-          this.props.useCapture,
-        );
-        scrollEl.addEventListener(
-          'resize',
-          this.scrollListener,
-          this.props.useCapture,
-        );
+        if (scrollEl) {
+          scrollEl.addEventListener(
+            'mousewheel',
+            this.mousewheelListener,
+            this.props.useCapture,
+          );
+          scrollEl.addEventListener(
+            'scroll',
+            this.scrollListener,
+            this.props.useCapture,
+          );
+          scrollEl.addEventListener(
+            'resize',
+            this.scrollListener,
+            this.props.useCapture,
+          );
+        }
 
         if (this.props.initialLoad) {
           this.scrollListener();
@@ -209,11 +210,13 @@ var InfiniteScroll = (function(_Component) {
     {
       key: 'scrollListener',
       value: function scrollListener() {
-        var el = this.scrollComponent;
+        var el = this.props.scrollElementSelector
+          ? document.querySelector(this.props.scrollElementSelector).children[0]
+          : this.scrollComponent;
         var scrollEl = window;
 
         var offset = void 0;
-        if (this.props.useWindow) {
+        if (this.props.useWindow && !this.props.scrollElementSelector) {
           var doc =
             document.documentElement ||
             document.body.parentNode ||
@@ -229,13 +232,15 @@ var InfiniteScroll = (function(_Component) {
               this.calculateTopPosition(el) +
               (el.offsetHeight - scrollTop - window.innerHeight);
           }
-        } else if (this.props.isReverse) {
-          offset = el.parentNode.scrollTop;
         } else {
-          offset =
-            el.scrollHeight -
-            el.parentNode.scrollTop -
-            el.parentNode.clientHeight;
+          if (this.props.isReverse) {
+            offset = el.parentNode.scrollTop;
+          } else {
+            offset =
+              el.scrollHeight -
+              el.parentNode.scrollTop -
+              el.parentNode.clientHeight;
+          }
         }
 
         if (offset < Number(this.props.threshold)) {
@@ -274,6 +279,7 @@ var InfiniteScroll = (function(_Component) {
           threshold = _props.threshold,
           useCapture = _props.useCapture,
           useWindow = _props.useWindow,
+          scrollElementSelector = _props.scrollElementSelector,
           props = _objectWithoutProperties(_props, [
             'children',
             'element',
@@ -287,6 +293,7 @@ var InfiniteScroll = (function(_Component) {
             'threshold',
             'useCapture',
             'useWindow',
+            'scrollElementSelector',
           ]);
 
         props.ref = function(node) {
@@ -328,6 +335,7 @@ InfiniteScroll.propTypes = {
   ref: _propTypes2.default.func,
   threshold: _propTypes2.default.number,
   useCapture: _propTypes2.default.bool,
+  scrollElementSelector: _propTypes2.default.string,
   useWindow: _propTypes2.default.bool,
 };
 InfiniteScroll.defaultProps = {
@@ -341,6 +349,7 @@ InfiniteScroll.defaultProps = {
   isReverse: false,
   useCapture: false,
   loader: null,
+  scrollElementSelector: '',
 };
 exports.default = InfiniteScroll;
 module.exports = exports['default'];
