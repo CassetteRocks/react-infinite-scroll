@@ -290,6 +290,7 @@ var InfiniteScroll = (function(_Component) {
           threshold = renderProps.threshold,
           useCapture = renderProps.useCapture,
           useWindow = renderProps.useWindow,
+          separateLoader = renderProps.separateLoader,
           props = _objectWithoutProperties(renderProps, [
             'children',
             'element',
@@ -303,6 +304,7 @@ var InfiniteScroll = (function(_Component) {
             'threshold',
             'useCapture',
             'useWindow',
+            'separateLoader',
           ]);
 
         props.ref = function(node) {
@@ -313,16 +315,19 @@ var InfiniteScroll = (function(_Component) {
         };
 
         var childrenArray = [children];
-        if (hasMore) {
-          if (loader) {
-            isReverse
-              ? childrenArray.unshift(loader)
-              : childrenArray.push(loader);
-          } else if (this.defaultLoader) {
-            isReverse
-              ? childrenArray.unshift(this.defaultLoader)
-              : childrenArray.push(this.defaultLoader);
-          }
+        var loadingElement = loader || this.defaultLoader;
+        if (hasMore && loadingElement) {
+          isReverse
+            ? childrenArray.unshift(loadingElement)
+            : childrenArray.push(loadingElement);
+        }
+        if (separateLoader) {
+          return _react2.default.createElement('div', null, [
+            _react2.default.createElement(element, props, [children]),
+            hasMore &&
+              loadingElement &&
+              _react2.default.createElement(loadingElement),
+          ]);
         }
         return _react2.default.createElement(element, props, childrenArray);
       },
@@ -345,6 +350,7 @@ InfiniteScroll.propTypes = {
   threshold: _propTypes2.default.number,
   useCapture: _propTypes2.default.bool,
   useWindow: _propTypes2.default.bool,
+  separateLoader: _propTypes2.default.bool,
 };
 InfiniteScroll.defaultProps = {
   element: 'div',
@@ -357,6 +363,7 @@ InfiniteScroll.defaultProps = {
   isReverse: false,
   useCapture: false,
   loader: null,
+  separateLoader: false,
 };
 exports.default = InfiniteScroll;
 module.exports = exports['default'];
