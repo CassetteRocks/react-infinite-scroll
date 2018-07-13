@@ -75,4 +75,31 @@ describe('InfiniteScroll component', () => {
     InfiniteScroll.prototype.attachScrollListener.restore();
     InfiniteScroll.prototype.scrollListener.restore();
   });
+
+  it('should render init items', () => {
+    const loadMore = stub();
+    const resetFinished = stub();
+    const children = (
+      <div>
+        <div className="child-class">1</div>
+        <div className="child-class">2</div>
+        <div className="child-class">3</div>
+      </div>
+    );
+
+    const wrapper = mount(
+      <div>
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={loadMore}
+          hasMore={false}
+          isReset={true}
+          resetFinished={resetFinished}
+        >
+          <div className="om-product__list">{children}</div>
+        </InfiniteScroll>
+      </div>,
+    );
+    expect(wrapper.find('.child-class').length).to.equal(3);
+  });
 });

@@ -257,6 +257,12 @@ var InfiniteScroll = (function(_Component) {
           this.detachScrollListener();
           // Call loadMore after detachScrollListener to allow for non-async loadMore functions
           if (typeof this.props.loadMore === 'function') {
+            // Detect if reset pageLoaded
+            if (this.props.isReset) {
+              this.pageLoaded = this.props.pageStart;
+              this.props.resetFinished();
+            }
+
             this.props.loadMore((this.pageLoaded += 1));
           }
         }
@@ -290,6 +296,8 @@ var InfiniteScroll = (function(_Component) {
           threshold = renderProps.threshold,
           useCapture = renderProps.useCapture,
           useWindow = renderProps.useWindow,
+          isReset = renderProps.isReset,
+          resetFinished = renderProps.resetFinished,
           props = _objectWithoutProperties(renderProps, [
             'children',
             'element',
@@ -303,6 +311,8 @@ var InfiniteScroll = (function(_Component) {
             'threshold',
             'useCapture',
             'useWindow',
+            'isReset',
+            'resetFinished',
           ]);
 
         props.ref = function(node) {
@@ -345,6 +355,8 @@ InfiniteScroll.propTypes = {
   threshold: _propTypes2.default.number,
   useCapture: _propTypes2.default.bool,
   useWindow: _propTypes2.default.bool,
+  isReset: _propTypes2.default.bool,
+  resetFinished: _propTypes2.default.func.isRequired,
 };
 InfiniteScroll.defaultProps = {
   element: 'div',
@@ -357,6 +369,7 @@ InfiniteScroll.defaultProps = {
   isReverse: false,
   useCapture: false,
   loader: null,
+  isReset: false,
 };
 exports.default = InfiniteScroll;
 module.exports = exports['default'];

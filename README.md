@@ -98,3 +98,5 @@ class InfiniteScrollOverride extends InfiniteScroll {
 | `threshold`      | `Number`     | `250`      | The distance in pixels before the end of the items that will trigger a call to `loadMore`.|
 | `useCapture`     | `Boolean`     | `false`     | Proxy to the `useCapture` option of the added event listeners.|
 | `useWindow`      | `Boolean`     | `true`     | Add scroll listeners to the window, or else, the component's `parentNode`.|
+| `isReset`        | `Boolean`     | `false`     | Whether to reset pageLoaded. Set pageLoaded to pageStart if `true`.|
+| `resetFinished`  | `Function`    |            | A callback when pageLoaded is reset e.g. `function resetFinished() { /* set isReset to false */ }` }|
