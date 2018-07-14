@@ -169,7 +169,7 @@ export default class InfiniteScroll extends Component {
       if (typeof this.props.loadMore === 'function') {
         // Detect if reset pageLoaded
         if (this.props.isReset) {
-          this.pageLoaded = this.props.pageStart;
+          this.resetPageLoaded();
           this.props.resetFinished();
         }
 
@@ -223,5 +223,9 @@ export default class InfiniteScroll extends Component {
       }
     }
     return React.createElement(element, props, childrenArray);
+  }
+
+  resetPageLoaded() {
+    this.pageLoaded = this.props.pageStart;
   }
 }

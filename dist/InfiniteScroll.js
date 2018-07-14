@@ -259,7 +259,7 @@ var InfiniteScroll = (function(_Component) {
           if (typeof this.props.loadMore === 'function') {
             // Detect if reset pageLoaded
             if (this.props.isReset) {
-              this.pageLoaded = this.props.pageStart;
+              this.resetPageLoaded();
               this.props.resetFinished();
             }
 
@@ -335,6 +335,12 @@ var InfiniteScroll = (function(_Component) {
           }
         }
         return _react2.default.createElement(element, props, childrenArray);
+      },
+    },
+    {
+      key: 'resetPageLoaded',
+      value: function resetPageLoaded() {
+        this.pageLoaded = this.props.pageStart;
       },
     },
   ]);
