@@ -15,6 +15,7 @@ export default class InfiniteScroll extends Component {
     threshold: PropTypes.number,
     useCapture: PropTypes.bool,
     useWindow: PropTypes.bool,
+    separateLoader: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -28,6 +29,7 @@ export default class InfiniteScroll extends Component {
     isReverse: false,
     useCapture: false,
     loader: null,
+    separateLoader: false,
   };
 
   constructor(props) {
@@ -191,6 +193,7 @@ export default class InfiniteScroll extends Component {
       threshold,
       useCapture,
       useWindow,
+      separateLoader,
       ...props
     } = renderProps;
 
@@ -202,14 +205,17 @@ export default class InfiniteScroll extends Component {
     };
 
     const childrenArray = [children];
-    if (hasMore) {
-      if (loader) {
-        isReverse ? childrenArray.unshift(loader) : childrenArray.push(loader);
-      } else if (this.defaultLoader) {
-        isReverse
-          ? childrenArray.unshift(this.defaultLoader)
-          : childrenArray.push(this.defaultLoader);
-      }
+    const loadingElement = loader || this.defaultLoader;
+    if (hasMore && loadingElement) {
+      isReverse
+        ? childrenArray.unshift(loadingElement)
+        : childrenArray.push(loadingElement);
+    }
+    if (separateLoader) {
+      return React.createElement('div', null, [
+        React.createElement(element, props, [children]),
+        hasMore && loadingElement && React.createElement(loadingElement),
+      ]);
     }
     return React.createElement(element, props, childrenArray);
   }
