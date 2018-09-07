@@ -3,4 +3,4 @@ coverage
 test
 .nyc_output
 docs
-
+.babelrc
