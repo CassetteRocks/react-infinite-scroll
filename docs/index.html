@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en-us">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>React Infinite Scroller by CASSETTE</title>
-    
+
     <link rel="stylesheet" href="stylesheets/normalize.css" media="screen">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700">
     <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" href="stylesheets/github-light.css" media="screen">
 </head>
+
 <body>
     <section class="page-header">
         <h1 class="project-name">React Infinite Scroller</h1>
-        <h2 class="project-tagline">Infinite scroll component for React in ES6</h2>
+        <h2 class="project-tagline">Infinite scroll component for React</h2>
         <a href="demo" class="btn">View Demo</a>
         <a href="https://github.com/CassetteRocks/react-infinite-scroller" class="btn">View on GitHub</a>
     </section>
@@ -25,7 +27,8 @@
                 <img src="https://img.shields.io/npm/dt/react-infinite-scroller.svg?style=flat-square" alt="npm">
             </a>
             <a href="https://www.npmjs.com/package/react">
-                <img src="https://img.shields.io/badge/React-%5E0.14.0%20%7C%7C%20%5E15.0.1-blue.svg?style=flat-square" alt="React Version">
+                <img src="https://img.shields.io/badge/React-%5E0.14.0%20%7C%7C%20%5E15.0.1-blue.svg?style=flat-square"
+                    alt="React Version">
             </a>
             <a href="https://www.npmjs.com/package/react-infinite-scroller">
                 <img src="https://img.shields.io/npm/v/react-infinite-scroller.svg?style=flat-square" alt="npm">
@@ -34,15 +37,35 @@
                 <img src="https://img.shields.io/npm/l/react-infinite-scroller.svg?style=flat-square" alt="npm">
             </a>
         </p>
-        
-        <p>Infinitely load content using a React Component. This fork maintains a simple, lightweight infinite scroll package that supports both <code>window</code> and scrollable elements.</p>
-        
+
+        <p>Infinitely load a grid or list of items in React. This component allows you to create a simple, lightweight
+            infinite
+            scrolling page or element by supporting both <code>window</code> and scrollable elements.</p>
+
+        <br>
+
+        <ul>
+            <li>⏬ Ability to use <code>window</code> or a scrollable element</li>
+            <li>📏 No need to specify item heights</li>
+            <li>💬 Support for "chat history" (reverse) mode</li>
+            <li>✅ Fully unit tested and used in hundreds of production sites around the world!</li>
+            <li>📦 Lightweight alternative to other available React scroll libs ~ 1.9KB minified & gzipped</li>
+        </ul>
+
+        <h2>Alternatives</h2>
+
+        <p>If you plan to use this component to render thousands of items, I recommend taking a looking at <a href="https://github.com/seatgeek/react-infinite">react-infinite</a>
+            (item element heights required) or <a href="https://github.com/bvaughn/react-virtualized">react-virtualized</a>
+            (larger package size).</p>
+
         <h2>
             <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
             Installation
         </h2>
 
         <pre><code>npm i react-infinite-scroller</code></pre>
+
+        <pre><code>yarn add react-infinite-scroller</code></pre>
 
         <h2>
             <a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
@@ -52,33 +75,66 @@
         <pre><code>import InfiniteScroll from 'react-infinite-scroller'</code></pre>
 
         <h3>
-            <a id="window-scroll-events" class="anchor" href="#window-scroll-events" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+            <a id="window-scroll-events" class="anchor" href="#window-scroll-events" aria-hidden="true"><span
+                    aria-hidden="true" class="octicon octicon-link"></span></a>
             Window scroll events
         </h3>
 
-<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">InfiniteScroll</span>
+        <div class="highlight highlight-text-html-basic">
+            <pre>&lt;<span class="pl-ent">InfiniteScroll</span>
     <span class="pl-e">pageStart</span>=<span class="pl-s">{0}</span>
     <span class="pl-e">loadMore</span>=<span class="pl-s">{loadFunc}</span>
-    <span class="pl-e">hasMore</span>=<span class="pl-s">{true</span> || <span class="pl-e">false</span>}
-    <span class="pl-e">loader</span>=<span class="pl-s">{</span>&lt;<span class="pl-e">div</span> <span class="pl-e">className</span>=<span class="pl-s"><span class="pl-pds">"</span>loader<span class="pl-pds">"</span></span>&gt;Loading ...&lt;/<span class="pl-ent">div</span>&gt;}&gt;
+    <span class="pl-e">hasMore</span>=<span class="pl-s">{true</span> || <span class="pl-e">false</span><span class="pl-s">}</span>
+    <span class="pl-e">loader</span>=<span class="pl-s">{</span>() =&gt; &lt;<span class="pl-ent">div</span> <span class="pl-e">className</span>=<span class="pl-s"><span class="pl-pds">"</span>loader<span class="pl-pds">"</span></span>&gt;Loading ...&lt;/<span class="pl-ent">div</span>&gt;}
+&gt;
   {items} // &lt;-- This is the content you want to load
-&lt;/<span class="pl-ent">InfiniteScroll</span>&gt;</pre></div>
+&lt;/<span class="pl-ent">InfiniteScroll</span>&gt;</pre>
+        </div>
 
         <h3>
-            <a id="dom-scroll-events" class="anchor" href="#dom-scroll-events" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+            <a id="dom-scroll-events" class="anchor" href="#dom-scroll-events" aria-hidden="true"><span aria-hidden="true"
+                    class="octicon octicon-link"></span></a>
             DOM scroll events
         </h3>
 
-<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>height:700px;overflow:auto;<span class="pl-pds">"</span></span>&gt;
+        <div class="highlight highlight-text-html-basic">
+            <pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>height:700px;overflow:auto;<span class="pl-pds">"</span></span>&gt;
   &lt;<span class="pl-ent">InfiniteScroll</span>
       <span class="pl-e">pageStart</span>=<span class="pl-s">{0}</span>
       <span class="pl-e">loadMore</span>=<span class="pl-s">{loadFunc}</span>
-      <span class="pl-e">hasMore</span>=<span class="pl-s">{true</span> || <span class="pl-e">false</span>}
-      <span class="pl-e">loader</span>=<span class="pl-s">{</span>&lt;<span class="pl-e">div</span> <span class="pl-e">className</span>=<span class="pl-s"><span class="pl-pds">"</span>loader<span class="pl-pds">"</span></span>&gt;Loading ...&lt;/<span class="pl-ent">div</span>&gt;}
-      useWindow={false}&gt;
+      <span class="pl-e">hasMore</span>=<span class="pl-s">{true</span> || <span class="pl-e">false</span><span class="pl-s">}</span>
+      <span class="pl-e">loader</span>=<span class="pl-s">{</span>() =&gt; &lt;<span class="pl-ent">div</span> <span class="pl-e">className</span>=<span class="pl-s"><span class="pl-pds">"</span>loader<span class="pl-pds">"</span></span>&gt;Loading ...&lt;/<span class="pl-ent">div</span>&gt;}
+      <span class="pl-e">useWindow</span>=<span class="pl-s">{false}</span>
+  &gt;
     {items}
   &lt;/<span class="pl-ent">InfiniteScroll</span>&gt;
-&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+&lt;/<span class="pl-ent">div</span>&gt;</pre>
+        </div>
+
+        <h3>
+            <a id="custom-parent-element" class="anchor" href="#custom-parent-element" aria-hidden="true"><span
+                    aria-hidden="true" class="octicon octicon-link"></span></a>
+            Custom parent element
+        </h3>
+
+        <p>You can define a custom <code>parentNode</code> element to base the scroll calulations on.</p>
+
+        <div class="highlight highlight-text-html-basic">
+            <pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>height:700px;overflow:auto;<span class="pl-pds">"</span></span> <span class="pl-e">ref</span>={c => <span class="pl-s">this.scrollParentRef</span> = <span class="pl-s">c</span>}&gt;
+    &lt;<span class="pl-ent">div</span>&gt;
+        &lt;<span class="pl-ent">InfiniteScroll</span>
+            <span class="pl-e">pageStart</span>=<span class="pl-s">{0}</span>
+            <span class="pl-e">loadMore</span>=<span class="pl-s">{loadFunc}</span>
+            <span class="pl-e">hasMore</span>=<span class="pl-s">{true</span> || <span class="pl-e">false</span><span class="pl-s">}</span>
+            <span class="pl-e">loader</span>=<span class="pl-s">{</span>() =&gt; &lt;<span class="pl-ent">div</span> <span class="pl-e">className</span>=<span class="pl-s"><span class="pl-pds">"</span>loader<span class="pl-pds">"</span></span>&gt;Loading ...&lt;/<span class="pl-ent">div</span>&gt;}
+            <span class="pl-e">useWindow</span>=<span class="pl-s">{false}</span>
+            <span class="pl-e">getScrollParent</span>={() =&gt; <span class="pl-s">this.scrollParentRef</span>}
+        &gt;
+            {items}
+        &lt;/<span class="pl-ent">InfiniteScroll</span>&gt;
+    &lt;/<span class="pl-ent">div</span>&gt;
+&lt;/<span class="pl-ent">div</span>&gt;</pre>
+        </div>
 
         <h2>
             <a id="props" class="anchor" href="#props" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
@@ -96,58 +152,148 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><code>element</code></td>
-                    <td><code>String</code></td>
+                    <td><code>container</code></td>
+                    <td><code>node</code></td>
                     <td><code>'div'</code></td>
-                    <td>Name of the element that the component should render as.</td>
+                    <td>Container component or HTML tag that the component should render as.</td>
+                </tr>
+                <tr>
+                    <td><code>direction</code></td>
+                    <td><code>string</code></td>
+                    <td><code>'down'</code></td>
+                    <td>Which direction the user needs to scroll to load more items. `up` or `down`.</td>
+                </tr>
+                <tr>
+                    <td><code>getScrollParent</code></td>
+                    <td><code>func</code></td>
+                    <td><code>'div'</code></td>
+                    <td>Return a custom element to calculate the scroll position from. Expects a DOM node.</td>
                 </tr>
                 <tr>
                     <td><code>hasMore</code></td>
-                    <td><code>Boolean</code></td>
+                    <td><code>bool</code></td>
                     <td><code>false</code></td>
-                    <td>Whether there are more items to be loaded. Event listeners are removed if <code>false</code>.</td>
+                    <td>Whether there are more items to be loaded. Scroll event listeners are removed if <code>false</code>.</td>
                 </tr>
                 <tr>
                     <td><code>initialLoad</code></td>
-                    <td><code>Boolean</code></td>
+                    <td><code>bool</code></td>
                     <td><code>true</code></td>
-                    <td>Whether the component should load the first set of items.</td>
+                    <td>Whether the component should load the first set of items on mount.</td>
                 </tr>
                 <tr>
                     <td><code>loadMore</code></td>
-                    <td><code>Function</code></td>
+                    <td><code>func</code></td>
                     <td></td>
                     <td>A callback when more items are requested by the user.</td>
                 </tr>
                 <tr>
+                    <td><code>loader</code></td>
+                    <td><code>func</code> or <code>Component</code></td>
+                    <td></td>
+                    <td>A component to show whilst loading items.</td>
+                </tr>
+                <tr>
+                    <td><code>loaderKey</code></td>
+                    <td><code>any</code></td>
+                    <td><code>'ISLoader</code></td>
+                    <td>In case the default key of the loader conflicts with your app.</td>
+                </tr>
+                <tr>
                     <td><code>pageStart</code></td>
-                    <td><code>Object</code></td>
+                    <td><code>number</code></td>
                     <td><code>0</code></td>
-                    <td>The number of the first page to load, With the default of <code>0</code>, the first page is <code>1</code>.</td>
+                    <td>The number of the first page to load, With the default of <code>0</code>, the first page is
+                        <code>1</code>.</td>
                 </tr>
                 <tr>
                     <td><code>threshold</code></td>
-                    <td><code>Number</code></td>
+                    <td><code>number</code></td>
                     <td><code>250</code></td>
                     <td>The distance in pixels before the end of the items that will trigger a call to <code>loadMore</code>.</td>
                 </tr>
                 <tr>
+                    <td><code>useCapture</code></td>
+                    <td><code>bool</code></td>
+                    <td><code>false</code></td>
+                    <td>The <code>useCapture</code> option of the scroll event listeners.</td>
+                </tr>
+                <tr>
                     <td><code>useWindow</code></td>
-                    <td><code>Boolean</code></td>
+                    <td><code>bool</code></td>
                     <td><code>true</code></td>
                     <td>Add scroll listeners to the window, or else, the component's <code>parentNode</code>.</td>
                 </tr>
             </tbody>
         </table>
 
-        <footer class="site-footer">
-            <span class="site-footer-owner"><a href="https://github.com/CassetteRocks/react-infinite-scroller">React Infinite Scroller</a> is maintained by <a href="https://github.com/CassetteRocks">CASSETTE</a>.</span>
-            <span class="site-footer-owner">Created by <a href="https://github.com/guillaumervls">guillaumervls</a>.</span>
+        <h2>Troubleshooting</h2>
 
-            <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-        </footer>
+        <h3>Double or non-stop calls to <code>loadMore</code></h3>
+
+        <p>If you experience double or non-stop calls to your <code>loadMore</code> callback, make sure you have your
+            CSS
+            layout working properly before adding this component in. Calculations are made based on the height of the
+            element
+            the component creates to wrap the items, so the height of this element must equal the entire height of the
+            items.</p>
+
+        <h3>But you should just add an <code>isLoading</code> prop!</h3>
+
+        <p>This component doesn't make any assumptions about what you do in terms of API calls. It's up to you to store
+            whether
+            you are currently loading items from an API in your state/reducers so that you don't make overlapping API
+            calls.
+        </p>
+
+        <pre><code>loadMore() {
+    if(!this.state.isLoading) {
+        this.props.fetchItems();
+    }
+}</code></pre>
     </section>
 
-    <a href="https://github.com/CassetteRocks/react-infinite-scroller" class="github-corner"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:rgba(255, 255, 255, 0.2); color:#fff; position: absolute; top: 0; border: 0; right: 0;"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <a href="https://github.com/CassetteRocks/react-infinite-scroller" class="github-corner"><svg width="80" height="80"
+            viewBox="0 0 250 250" style="fill:rgba(255, 255, 255, 0.2); color:#fff; position: absolute; top: 0; border: 0; right: 0;">
+            <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+            <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+                fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+            <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+                fill="currentColor" class="octo-body"></path>
+        </svg></a>
+    <style>
+        .github-corner:hover .octo-arm {
+            animation: octocat-wave 560ms ease-in-out
+        }
+
+        @keyframes octocat-wave {
+
+            0%,
+            100% {
+                transform: rotate(0)
+            }
+
+            20%,
+            60% {
+                transform: rotate(-25deg)
+            }
+
+            40%,
+            80% {
+                transform: rotate(10deg)
+            }
+        }
+
+        @media (max-width:500px) {
+            .github-corner:hover .octo-arm {
+                animation: none
+            }
+
+            .github-corner .octo-arm {
+                animation: octocat-wave 560ms ease-in-out
+            }
+        }
+    </style>
 </body>
+
 </html>

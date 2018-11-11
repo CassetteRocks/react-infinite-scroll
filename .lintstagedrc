@@ -1,0 +1,11 @@
+{
+    "*.{json,css,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "sortier",
+      "git add"
+    ]
+  }

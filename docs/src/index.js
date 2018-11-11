@@ -1,95 +1,95 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import InfiniteScroll from '../../dist/InfiniteScroll';
 import qwest from 'qwest';
 
-const imageList = [];
+import InfiniteScroll from '../../dist/InfiniteScroll';
+
 const api = {
-    baseUrl: 'https://api.soundcloud.com',
-    client_id: 'caf73ef1e709f839664ab82bef40fa96'
+  baseUrl: 'https://api.soundcloud.com',
+  client_id: 'caf73ef1e709f839664ab82bef40fa96'
 };
 
 class App extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            tracks: [],
-            hasMoreItems: true,
-            nextHref: null
-        };
+    this.state = {
+      tracks: [],
+      hasMoreItems: true,
+      nextHref: null
+    };
+
+    this.loadItems = this.loadItems.bind(this);
+  }
+
+  loadItems() {
+    var self = this;
+
+    var url = api.baseUrl + '/users/8665091/favorites';
+    if (this.state.nextHref) {
+      url = this.state.nextHref;
     }
 
-    loadItems(page) {
-        var self = this;
+    qwest.get(url, {
+      client_id: api.client_id,
+      linked_partitioning: 1,
+      page_size: 10
+    }, {
+        cache: true
+      })
+      .then(function (xhr, resp) {
+        if (resp) {
+          var tracks = self.state.tracks;
+          resp.collection.map((track) => {
+            if (track.artwork_url == null) {
+              track.artwork_url = track.user.avatar_url;
+            }
 
-        var url = api.baseUrl + '/users/8665091/favorites';
-        if(this.state.nextHref) {
-            url = this.state.nextHref;
-        }
+            tracks.push(track);
+          });
 
-        qwest.get(url, {
-                client_id: api.client_id,
-                linked_partitioning: 1,
-                page_size: 10
-            }, {
-                cache: true
-            })
-            .then(function(xhr, resp) {
-                if(resp) {
-                    var tracks = self.state.tracks;
-                    resp.collection.map((track) => {
-                        if(track.artwork_url == null) {
-                            track.artwork_url = track.user.avatar_url;
-                        }
-
-                        tracks.push(track);
-                    });
-
-                    if(resp.next_href) {
-                        self.setState({
-                            tracks: tracks,
-                            nextHref: resp.next_href
-                        });
-                    } else {
-                        self.setState({
-                            hasMoreItems: false
-                        });
-                    }
-                }
+          if (resp.next_href) {
+            self.setState({
+              tracks: tracks,
+              nextHref: resp.next_href
             });
-    }
+          } else {
+            self.setState({
+              hasMoreItems: false
+            });
+          }
+        }
+      });
+  }
 
-    render() {
-        const loader = <div className="loader">Loading ...</div>;
+  render() {
+    const { hasMoreItems, tracks } = this.state;
 
-        var items = [];
-        this.state.tracks.map((track, i) => {
-            items.push(
-                <div className="track" key={i}>
-                    <a href={track.permalink_url} target="_blank">
-                        <img src={track.artwork_url} width="150" height="150" />
-                        <p className="title">{track.title}</p>
-                    </a>
-                </div>
-            );
-        });
+    const loader = () => <div className="spinner" />;
 
-        return (
-            <InfiniteScroll
-                pageStart={0}
-                loadMore={this.loadItems.bind(this)}
-                hasMore={this.state.hasMoreItems}
-                loader={loader}>
+    var items = [];
+    tracks.map(track => {
+      items.push(
+        <div className="track" key={track.id}>
+          <a href={track.permalink_url} target="_blank">
+            <img src={track.artwork_url} width="150" height="150" />
+            <p className="title">{track.title}</p>
+          </a>
+        </div>
+      );
+    });
 
-                <div className="tracks">
-                    {items}
-                </div>
-            </InfiniteScroll>
-        );
-    }
+    return (
+      <InfiniteScroll
+        loadMore={this.loadItems}
+        hasMore={hasMoreItems}
+        loader={loader}
+        className="tracks"
+      >
+        {items}
+      </InfiniteScroll>
+    );
+  }
 };
 
-ReactDOM.render(
-    <App />
-, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
