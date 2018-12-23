@@ -108,30 +108,43 @@ export default class InfiniteScroll extends Component {
       return;
     }
 
+    const supportsPassive = this.supportsPassive();
+
+    const options = supportsPassive
+      ? { capture: this.props.useCapture, passive: true }
+      : this.props.useCapture;
+
     let scrollEl = window;
     if (this.props.useWindow === false) {
       scrollEl = parentElement;
     }
 
-    scrollEl.addEventListener(
-      'mousewheel',
-      this.mousewheelListener,
-      this.props.useCapture,
-    );
-    scrollEl.addEventListener(
-      'scroll',
-      this.scrollListener,
-      this.props.useCapture,
-    );
-    scrollEl.addEventListener(
-      'resize',
-      this.scrollListener,
-      this.props.useCapture,
-    );
+    scrollEl.addEventListener('mousewheel', this.mousewheelListener, options);
+    scrollEl.addEventListener('scroll', this.scrollListener, options);
+    scrollEl.addEventListener('resize', this.scrollListener, options);
 
     if (this.props.initialLoad) {
       this.scrollListener();
     }
+  }
+
+  supportsPassive() {
+    let supportsPassive = false;
+
+    try {
+      const opts = Object.defineProperty({}, 'passive', {
+        get: function() {
+          supportsPassive = true;
+        },
+      });
+
+      window.addEventListener('testPassive', null, opts);
+      window.removeEventListener('testPassive', null, opts);
+    } catch (e) {
+      /* intentionally empty */
+    }
+
+    return supportsPassive;
   }
 
   mousewheelListener(e) {
