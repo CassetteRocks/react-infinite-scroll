@@ -178,7 +178,7 @@ export default class InfiniteScroll extends Component {
   mousewheelListener(e) {
     // Prevents Chrome hangups
     // See: https://stackoverflow.com/questions/47524205/random-high-content-download-time-in-chrome/47684257#47684257
-    if (e.deltaY === 1 && !this.isPassiveSupported()) {
+    if (e.deltaY === 1 && !this.options.passive) {
       e.preventDefault();
     }
   }
