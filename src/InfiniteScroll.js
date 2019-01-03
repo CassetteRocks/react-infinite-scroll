@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import debounce from 'lodash/debounce';
 
 export default class InfiniteScroll extends Component {
   static propTypes = {
@@ -35,7 +36,7 @@ export default class InfiniteScroll extends Component {
   constructor(props) {
     super(props);
 
-    this.scrollListener = this.scrollListener.bind(this);
+    this.scrollListener = debounce(this.scrollListener.bind(this), 100);
     this.eventListenerOptions = this.eventListenerOptions.bind(this);
     this.mousewheelListener = this.mousewheelListener.bind(this);
   }
