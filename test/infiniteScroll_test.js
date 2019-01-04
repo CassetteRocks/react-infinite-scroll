@@ -46,7 +46,7 @@ describe('InfiniteScroll component', () => {
     InfiniteScroll.prototype.componentDidMount.restore();
   });
 
-  it('should attach scroll listeners', () => {
+  it('should attach scroll listeners', done => {
     spy(InfiniteScroll.prototype, 'attachScrollListener');
     spy(InfiniteScroll.prototype, 'scrollListener');
     const loadMore = stub();
@@ -71,9 +71,19 @@ describe('InfiniteScroll component', () => {
       </div>
     );
     expect(InfiniteScroll.prototype.attachScrollListener.callCount).to.equal(1);
-    expect(InfiniteScroll.prototype.scrollListener.callCount).to.equal(1);
-    InfiniteScroll.prototype.attachScrollListener.restore();
-    InfiniteScroll.prototype.scrollListener.restore();
+    expect(InfiniteScroll.prototype.scrollListener.callCount).to.equal(0);
+
+    // eslint-disable-next-line no-undef
+    setTimeout(() => {
+      expect(InfiniteScroll.prototype.attachScrollListener.callCount).to.equal(
+        1
+      );
+      expect(InfiniteScroll.prototype.scrollListener.callCount).to.equal(1);
+
+      InfiniteScroll.prototype.attachScrollListener.restore();
+      InfiniteScroll.prototype.scrollListener.restore();
+      done();
+    }, 100);
   });
 
   it('should handle when the scrollElement is removed from the DOM', () => {
