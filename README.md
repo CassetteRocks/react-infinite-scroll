@@ -11,6 +11,7 @@ Infinitely load content using a React Component. This fork maintains a simple, l
 
 - [Demo](https://cassetterocks.github.io/react-infinite-scroller/demo/)
 - [Demo Source](https://github.com/CassetteRocks/react-infinite-scroller/blob/master/docs/src/index.js)
+- [Demo Playground](https://stackblitz.com/edit/react-sszeut)
 
 ## Installation
 
