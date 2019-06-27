@@ -115,10 +115,16 @@ var InfiniteScroll = (function(_Component) {
       value: function componentDidUpdate() {
         if (this.props.isReverse && this.loadMore) {
           var parentElement = this.getParentElement(this.scrollComponent);
+          if (this.props.momentumScrollQuirks) {
+            parentElement.style['-webkit-overflow-scrolling'] = 'auto';
+          }
           parentElement.scrollTop =
             parentElement.scrollHeight -
             this.beforeScrollHeight +
             this.beforeScrollTop;
+          if (this.props.momentumScrollQuirks) {
+            parentElement.style['-webkit-overflow-scrolling'] = 'touch';
+          }
           this.loadMore = false;
         }
         this.attachScrollListener();
@@ -358,6 +364,7 @@ var InfiniteScroll = (function(_Component) {
           useCapture = renderProps.useCapture,
           useWindow = renderProps.useWindow,
           getScrollParent = renderProps.getScrollParent,
+          momentumScrollQuirks = renderProps.momentumScrollQuirks,
           props = _objectWithoutProperties(renderProps, [
             'children',
             'element',
@@ -371,7 +378,8 @@ var InfiniteScroll = (function(_Component) {
             'threshold',
             'useCapture',
             'useWindow',
-            'getScrollParent'
+            'getScrollParent',
+            'momentumScrollQuirks'
           ]);
 
         props.ref = function(node) {
@@ -414,7 +422,8 @@ InfiniteScroll.propTypes = {
   getScrollParent: _propTypes2.default.func,
   threshold: _propTypes2.default.number,
   useCapture: _propTypes2.default.bool,
-  useWindow: _propTypes2.default.bool
+  useWindow: _propTypes2.default.bool,
+  momentumScrollQuirks: _propTypes2.default.bool
 };
 InfiniteScroll.defaultProps = {
   element: 'div',
@@ -427,7 +436,8 @@ InfiniteScroll.defaultProps = {
   isReverse: false,
   useCapture: false,
   loader: null,
-  getScrollParent: null
+  getScrollParent: null,
+  momentumScrollQuirks: false
 };
 exports.default = InfiniteScroll;
 module.exports = exports['default'];
