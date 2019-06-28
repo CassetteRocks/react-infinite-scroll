@@ -93,10 +93,6 @@ You can define a custom `parentNode` element to base the scroll calulations on.
 | `useCapture`     | `Boolean`     | `false`     | Proxy to the `useCapture` option of the added event listeners.|
 | `useWindow`      | `Boolean`     | `true`     | Add scroll listeners to the window, or else, the component's `parentNode`.|
 
-###### Public methods
-
-`InfiniteScroll` component can be forcefully reset page using `reset`
-
 ### Public Methods
 
 ##### reset
