@@ -63,6 +63,14 @@ export default class InfiniteScroll extends Component {
     this.detachMousewheelListener();
   }
 
+  reset() {
+    this.pageLoaded = this.props.pageStart;
+
+    if (this.props.initialLoad) {
+      this.scrollListener();
+    }
+  }
+
   isPassiveSupported() {
     let passive = false;
 
