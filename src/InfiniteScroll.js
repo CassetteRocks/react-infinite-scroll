@@ -216,7 +216,7 @@ export default class InfiniteScroll extends Component {
       this.beforeScrollHeight = parentNode.scrollHeight;
       this.beforeScrollTop = parentNode.scrollTop;
       // Call loadMore after detachScrollListener to allow for non-async loadMore functions
-      if (typeof this.props.loadMore === 'function') {
+      if (this.props.hasMore && typeof this.props.loadMore === 'function') {
         this.props.loadMore((this.pageLoaded += 1));
         this.loadMore = true;
       }
