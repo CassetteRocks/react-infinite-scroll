@@ -63,12 +63,22 @@ export default class InfiniteScroll extends Component {
     this.detachMousewheelListener();
   }
 
+  scrolltoTop() {
+    const parentElement = this.getParentElement(this.scrollComponent);
+
+    let scrollEl = window;
+
+    if (this.props.useWindow === false) {
+      scrollEl = parentElement;
+    }
+
+    scrollEl.scrollTop = 0;
+  }
+
   reset() {
     this.pageLoaded = this.props.pageStart;
 
-    if (this.props.initialLoad) {
-      this.scrollListener();
-    }
+    this.scrolltoTop();
   }
 
   isPassiveSupported() {
