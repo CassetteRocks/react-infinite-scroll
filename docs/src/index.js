@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import InfiniteScroll from '../../dist/InfiniteScroll';
 import qwest from 'qwest';
 
-const imageList = [];
 const api = {
     baseUrl: 'https://api.soundcloud.com',
     client_id: 'caf73ef1e709f839664ab82bef40fa96'
