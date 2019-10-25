@@ -98,6 +98,7 @@ var InfiniteScroll = (function(_Component) {
     _this.scrollListener = _this.scrollListener.bind(_this);
     _this.eventListenerOptions = _this.eventListenerOptions.bind(_this);
     _this.mousewheelListener = _this.mousewheelListener.bind(_this);
+    _this.scrollParentElement = null;
     return _this;
   }
 
@@ -112,7 +113,7 @@ var InfiniteScroll = (function(_Component) {
     },
     {
       key: 'componentDidUpdate',
-      value: function componentDidUpdate() {
+      value: function componentDidUpdate(prevProps) {
         if (this.props.isReverse && this.loadMore) {
           var parentElement = this.getParentElement(this.scrollComponent);
           parentElement.scrollTop =
@@ -128,7 +129,7 @@ var InfiniteScroll = (function(_Component) {
       key: 'componentWillUnmount',
       value: function componentWillUnmount() {
         this.detachScrollListener();
-        this.detachMousewheelListener();
+        this.scrollParentElement = null;
       }
     },
     {
@@ -174,38 +175,28 @@ var InfiniteScroll = (function(_Component) {
       }
     },
     {
-      key: 'detachMousewheelListener',
-      value: function detachMousewheelListener() {
-        var scrollEl = window;
-        if (this.props.useWindow === false) {
-          scrollEl = this.scrollComponent.parentNode;
-        }
-
-        scrollEl.removeEventListener(
-          'mousewheel',
-          this.mousewheelListener,
-          this.options ? this.options : this.props.useCapture
-        );
-      }
-    },
-    {
       key: 'detachScrollListener',
       value: function detachScrollListener() {
-        var scrollEl = window;
-        if (this.props.useWindow === false) {
-          scrollEl = this.getParentElement(this.scrollComponent);
+        if (!this.scrollParentElement) {
+          return;
         }
 
-        scrollEl.removeEventListener(
+        this.scrollParentElement.removeEventListener(
           'scroll',
           this.scrollListener,
           this.options ? this.options : this.props.useCapture
         );
-        scrollEl.removeEventListener(
+        this.scrollParentElement.removeEventListener(
           'resize',
           this.scrollListener,
           this.options ? this.options : this.props.useCapture
         );
+        this.scrollParentElement.removeEventListener(
+          'mousewheel',
+          this.mousewheelListener,
+          this.options ? this.options : this.props.useCapture
+        );
+        this.scrollParentElement = null;
       }
     },
     {
@@ -239,6 +230,10 @@ var InfiniteScroll = (function(_Component) {
           scrollEl = parentElement;
         }
 
+        if (this.scrollParentElement !== scrollEl) {
+          this.detachScrollListener();
+        }
+
         scrollEl.addEventListener(
           'mousewheel',
           this.mousewheelListener,
@@ -258,6 +253,8 @@ var InfiniteScroll = (function(_Component) {
         if (this.props.initialLoad) {
           this.scrollListener();
         }
+
+        this.scrollParentElement = scrollEl;
       }
     },
     {

@@ -38,6 +38,7 @@ export default class InfiniteScroll extends Component {
     this.scrollListener = this.scrollListener.bind(this);
     this.eventListenerOptions = this.eventListenerOptions.bind(this);
     this.mousewheelListener = this.mousewheelListener.bind(this);
+    this.scrollParentElement = null;
   }
 
   componentDidMount() {
@@ -60,7 +61,7 @@ export default class InfiniteScroll extends Component {
 
   componentWillUnmount() {
     this.detachScrollListener();
-    this.detachMousewheelListener();
+    this.scrollParentElement = null;
   }
 
   isPassiveSupported() {
@@ -98,35 +99,27 @@ export default class InfiniteScroll extends Component {
     this.defaultLoader = loader;
   }
 
-  detachMousewheelListener() {
-    let scrollEl = window;
-    if (this.props.useWindow === false) {
-      scrollEl = this.scrollComponent.parentNode;
-    }
-
-    scrollEl.removeEventListener(
-      'mousewheel',
-      this.mousewheelListener,
-      this.options ? this.options : this.props.useCapture
-    );
-  }
-
   detachScrollListener() {
-    let scrollEl = window;
-    if (this.props.useWindow === false) {
-      scrollEl = this.getParentElement(this.scrollComponent);
+    if (!this.scrollParentElement) {
+      return;
     }
 
-    scrollEl.removeEventListener(
+    this.scrollParentElement.removeEventListener(
       'scroll',
       this.scrollListener,
       this.options ? this.options : this.props.useCapture
     );
-    scrollEl.removeEventListener(
+    this.scrollParentElement.removeEventListener(
       'resize',
       this.scrollListener,
       this.options ? this.options : this.props.useCapture
     );
+    this.scrollParentElement.removeEventListener(
+      'mousewheel',
+      this.mousewheelListener,
+      this.options ? this.options : this.props.useCapture
+    );
+    this.scrollParentElement = null;
   }
 
   getParentElement(el) {
@@ -154,6 +147,10 @@ export default class InfiniteScroll extends Component {
       scrollEl = parentElement;
     }
 
+    if (this.scrollParentElement !== scrollEl) {
+      this.detachScrollListener();
+    }
+
     scrollEl.addEventListener(
       'mousewheel',
       this.mousewheelListener,
@@ -173,6 +170,8 @@ export default class InfiniteScroll extends Component {
     if (this.props.initialLoad) {
       this.scrollListener();
     }
+
+    this.scrollParentElement = scrollEl;
   }
 
   mousewheelListener(e) {
