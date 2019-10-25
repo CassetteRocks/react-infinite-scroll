@@ -113,7 +113,7 @@ var InfiniteScroll = (function(_Component) {
     },
     {
       key: 'componentDidUpdate',
-      value: function componentDidUpdate(prevProps) {
+      value: function componentDidUpdate() {
         if (this.props.isReverse && this.loadMore) {
           var parentElement = this.getParentElement(this.scrollComponent);
           parentElement.scrollTop =
