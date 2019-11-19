@@ -15,7 +15,8 @@ export default class InfiniteScroll extends Component {
     getScrollParent: PropTypes.func,
     threshold: PropTypes.number,
     useCapture: PropTypes.bool,
-    useWindow: PropTypes.bool
+    useWindow: PropTypes.bool,
+    momentumScrollQuirks: PropTypes.bool
   };
 
   static defaultProps = {
@@ -29,7 +30,8 @@ export default class InfiniteScroll extends Component {
     isReverse: false,
     useCapture: false,
     loader: null,
-    getScrollParent: null
+    getScrollParent: null,
+    momentumScrollQuirks: false
   };
 
   constructor(props) {
@@ -49,10 +51,16 @@ export default class InfiniteScroll extends Component {
   componentDidUpdate() {
     if (this.props.isReverse && this.loadMore) {
       const parentElement = this.getParentElement(this.scrollComponent);
+      if (this.props.momentumScrollQuirks) {
+        parentElement.style['-webkit-overflow-scrolling'] = 'auto';
+      }
       parentElement.scrollTop =
         parentElement.scrollHeight -
         this.beforeScrollHeight +
         this.beforeScrollTop;
+      if (this.props.momentumScrollQuirks) {
+        parentElement.style['-webkit-overflow-scrolling'] = 'touch';
+      }
       this.loadMore = false;
     }
     this.attachScrollListener();
@@ -261,6 +269,7 @@ export default class InfiniteScroll extends Component {
       useCapture,
       useWindow,
       getScrollParent,
+      momentumScrollQuirks,
       ...props
     } = renderProps;
 

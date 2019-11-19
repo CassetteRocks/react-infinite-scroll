@@ -92,3 +92,4 @@ You can define a custom `parentNode` element to base the scroll calulations on.
 | `threshold`      | `Number`     | `250`      | The distance in pixels before the end of the items that will trigger a call to `loadMore`.|
 | `useCapture`     | `Boolean`     | `false`     | Proxy to the `useCapture` option of the added event listeners.|
 | `useWindow`      | `Boolean`     | `true`     | Add scroll listeners to the window, or else, the component's `parentNode`.|
+| `momentumScrollQuirks`  | `Boolean`     | `false`     | fixes problem which prevents resetting the scroll position after `loadMore` with `isReverse=true` when scrollContainer has `-webkit-overflow-scrolling = auto` ,see [this issue](https://github.com/CassetteRocks/react-infinite-scroller/issues/92)|
