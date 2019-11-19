@@ -7,6 +7,7 @@ export default class InfiniteScroll extends Component {
     element: PropTypes.node,
     hasMore: PropTypes.bool,
     initialLoad: PropTypes.bool,
+    isLoading: PropTypes.bool.isRequired,
     isReverse: PropTypes.bool,
     loader: PropTypes.node,
     loadMore: PropTypes.func.isRequired,
@@ -220,7 +221,7 @@ export default class InfiniteScroll extends Component {
       this.beforeScrollHeight = parentNode.scrollHeight;
       this.beforeScrollTop = parentNode.scrollTop;
       // Call loadMore after detachScrollListener to allow for non-async loadMore functions
-      if (typeof this.props.loadMore === 'function') {
+      if (typeof this.props.loadMore === 'function' && !this.props.isLoading) {
         this.props.loadMore((this.pageLoaded += 1));
         this.loadMore = true;
       }
@@ -253,6 +254,7 @@ export default class InfiniteScroll extends Component {
       hasMore,
       initialLoad,
       isReverse,
+      isLoading,
       loader,
       loadMore,
       pageStart,
@@ -272,7 +274,7 @@ export default class InfiniteScroll extends Component {
     };
 
     const childrenArray = [children];
-    if (hasMore) {
+    if (isLoading) {
       if (loader) {
         isReverse ? childrenArray.unshift(loader) : childrenArray.push(loader);
       } else if (this.defaultLoader) {

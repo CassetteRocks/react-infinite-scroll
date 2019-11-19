@@ -34,6 +34,7 @@ import InfiniteScroll from 'react-infinite-scroller';
     pageStart={0}
     loadMore={loadFunc}
     hasMore={true || false}
+    isLoading={true || false}
     loader={<div className="loader" key={0}>Loading ...</div>}
 >
     {items} // <-- This is the content you want to load
@@ -48,6 +49,7 @@ import InfiniteScroll from 'react-infinite-scroller';
         pageStart={0}
         loadMore={loadFunc}
         hasMore={true || false}
+        isLoading={true || false}
         loader={<div className="loader" key={0}>Loading ...</div>}
         useWindow={false}
     >
@@ -67,6 +69,7 @@ You can define a custom `parentNode` element to base the scroll calulations on.
             pageStart={0}
             loadMore={loadFunc}
             hasMore={true || false}
+            isLoading={true || false}
             loader={<div className="loader" key={0}>Loading ...</div>}
             useWindow={false}
             getScrollParent={() => this.scrollParentRef}
@@ -81,8 +84,9 @@ You can define a custom `parentNode` element to base the scroll calulations on.
 
 | Name             | Type          | Default    | Description|
 |:----             |:----          |:----       |:----|
-| `element`        | `Component`      | `'div'`    | Name of the element that the component should render as.|
+| `element`        | `Component`   | `'div'`    | Name of the element that the component should render as.|
 | `hasMore`        | `Boolean`     | `false`    | Whether there are more items to be loaded. Event listeners are removed if `false`.|
+| `isLoading`      | `Boolean`     |            | Whether there is a page being loaded now|
 | `initialLoad`    | `Boolean`     | `true`     | Whether the component should load the first set of items.|
 | `isReverse`      | `Boolean`     | `false`    | Whether new items should be loaded when user scrolls to the top of the scrollable area.|
 | `loadMore`       | `Function`    |            | A callback when more items are requested by the user. Receives a single parameter specifying the page to load e.g. `function handleLoadMore(page) { /* load more items here */ }` }|
