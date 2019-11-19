@@ -92,3 +92,12 @@ You can define a custom `parentNode` element to base the scroll calulations on.
 | `threshold`      | `Number`     | `250`      | The distance in pixels before the end of the items that will trigger a call to `loadMore`.|
 | `useCapture`     | `Boolean`     | `false`     | Proxy to the `useCapture` option of the added event listeners.|
 | `useWindow`      | `Boolean`     | `true`     | Add scroll listeners to the window, or else, the component's `parentNode`.|
+
+### Public Methods
+
+##### reset
+Forcefully reset the local page based on `pageStart`. If the prop `initialLoad` is provided, force call `loadMore` with the start page.
+
+This may be appropriate if the api that inserts data in the list is reset, and the next page will be the initial page and not the last page known by InfiniteScroll. This is very common in listings with InfiniteScroll and search input.
+
+For the access public methods use `ref` prop.
