@@ -113,8 +113,11 @@ var InfiniteScroll = (function(_Component) {
     {
       key: 'componentDidUpdate',
       value: function componentDidUpdate() {
+        var parentElement = this.getParentElement(this.scrollComponent);
+        if (this.props.pageStart === 0) {
+          parentElement.scrollTop = 0;
+        }
         if (this.props.isReverse && this.loadMore) {
-          var parentElement = this.getParentElement(this.scrollComponent);
           parentElement.scrollTop =
             parentElement.scrollHeight -
             this.beforeScrollHeight +
@@ -160,6 +163,10 @@ var InfiniteScroll = (function(_Component) {
           options = {
             useCapture: this.props.useCapture,
             passive: true
+          };
+        } else {
+          options = {
+            passive: false
           };
         }
         return options;
