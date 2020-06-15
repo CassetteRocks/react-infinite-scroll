@@ -9,8 +9,8 @@ React Infinite Scroller
 
 Infinitely load content using a React Component. This fork maintains a simple, lightweight infinite scroll package that supports both `window` and scrollable elements.
 
-- [Demo](https://cassetterocks.github.io/react-infinite-scroller/demo/)
-- [Demo Source](https://github.com/CassetteRocks/react-infinite-scroller/blob/master/docs/src/index.js)
+- [Demo](https://danbovey.github.io/react-infinite-scroller/demo/)
+- [Demo Source](https://github.com/danbovey/react-infinite-scroller/blob/master/docs/src/index.js)
 
 ## Installation
 
