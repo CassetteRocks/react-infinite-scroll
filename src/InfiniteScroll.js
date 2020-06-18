@@ -105,7 +105,7 @@ export default class InfiniteScroll extends Component {
   detachMousewheelListener() {
     let scrollEl = window;
     if (this.props.useWindow === false) {
-      scrollEl = this.scrollComponent.parentNode;
+      scrollEl = this.getParentElement(this.scrollComponent);
     }
 
     scrollEl.removeEventListener(
