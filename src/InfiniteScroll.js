@@ -47,8 +47,11 @@ export default class InfiniteScroll extends Component {
   }
 
   componentDidUpdate() {
+    const parentElement = this.getParentElement(this.scrollComponent);
+    if (this.props.pageStart === 0) {
+      parentElement.scrollTop = 0;
+    }
     if (this.props.isReverse && this.loadMore) {
-      const parentElement = this.getParentElement(this.scrollComponent);
       parentElement.scrollTop =
         parentElement.scrollHeight -
         this.beforeScrollHeight +
