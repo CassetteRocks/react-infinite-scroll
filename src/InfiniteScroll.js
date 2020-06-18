@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 export default class InfiniteScroll extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    element: PropTypes.node,
+    element: PropTypes.elementType,
     hasMore: PropTypes.bool,
     initialLoad: PropTypes.bool,
     isReverse: PropTypes.bool,
