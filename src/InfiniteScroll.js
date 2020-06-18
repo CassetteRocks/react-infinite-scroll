@@ -208,7 +208,15 @@ export default class InfiniteScroll extends Component {
     } else if (this.props.isReverse) {
       offset = parentNode.scrollTop;
     } else {
-      offset = el.scrollHeight - parentNode.scrollTop - parentNode.clientHeight;
+      let relativeHeight =
+        el.getBoundingClientRect().top +
+        parentNode.scrollTop -
+        parentNode.getBoundingClientRect().top;
+      offset =
+        relativeHeight +
+        el.scrollHeight -
+        parentNode.scrollTop -
+        parentNode.clientHeight;
     }
 
     // Here we make sure the element is visible as well as checking the offset
