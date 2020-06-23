@@ -58,6 +58,13 @@ export default class InfiniteScroll extends Component {
     this.attachScrollListener();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.hasMore === false) {
+      this.detachScrollListener();
+      this.detachMousewheelListener();
+    }
+  }
+
   componentWillUnmount() {
     this.detachScrollListener();
     this.detachMousewheelListener();
