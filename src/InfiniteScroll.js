@@ -213,6 +213,7 @@ export default class InfiniteScroll extends Component {
 
     // Here we make sure the element is visible as well as checking the offset
     if (
+      offset > 0 &&
       offset < Number(this.props.threshold) &&
       (el && el.offsetParent !== null)
     ) {
