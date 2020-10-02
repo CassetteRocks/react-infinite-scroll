@@ -15,7 +15,7 @@ export default class InfiniteScroll extends Component {
     getScrollParent: PropTypes.func,
     threshold: PropTypes.number,
     useCapture: PropTypes.bool,
-    useWindow: PropTypes.bool,
+    useWindow: PropTypes.bool
   };
 
   static defaultProps = {
@@ -29,7 +29,7 @@ export default class InfiniteScroll extends Component {
     isReverse: false,
     useCapture: false,
     loader: null,
-    getScrollParent: null,
+    getScrollParent: null
   };
 
   constructor(props) {
@@ -69,7 +69,7 @@ export default class InfiniteScroll extends Component {
     const testOptions = {
       get passive() {
         passive = true;
-      },
+      }
     };
 
     try {
@@ -87,11 +87,11 @@ export default class InfiniteScroll extends Component {
     if (this.isPassiveSupported()) {
       options = {
         useCapture: this.props.useCapture,
-        passive: true,
+        passive: true
       };
     } else {
       options = {
-        passive: false,
+        passive: false
       };
     }
     return options;
@@ -214,8 +214,7 @@ export default class InfiniteScroll extends Component {
     // Here we make sure the element is visible as well as checking the offset
     if (
       offset < Number(this.props.threshold) &&
-      el &&
-      el.offsetParent !== null
+      (el && el.offsetParent !== null)
     ) {
       this.detachScrollListener();
       this.beforeScrollHeight = parentNode.scrollHeight;
@@ -265,7 +264,7 @@ export default class InfiniteScroll extends Component {
       ...props
     } = renderProps;
 
-    props.ref = (node) => {
+    props.ref = node => {
       this.scrollComponent = node;
       if (ref) {
         ref(node);
