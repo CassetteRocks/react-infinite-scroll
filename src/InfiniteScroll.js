@@ -135,7 +135,7 @@ export default class InfiniteScroll extends Component {
 
   getParentElement(el) {
     const scrollParent =
-      this.props.getScrollParent && this.props.getScrollParent();
+      this.props.getScrollParent && this.props.getScrollParent(el);
     if (scrollParent != null) {
       return scrollParent;
     }
