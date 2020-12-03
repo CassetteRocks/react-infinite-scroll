@@ -192,6 +192,13 @@ export default class InfiniteScroll extends Component {
     const scrollEl = window;
     const parentNode = this.getParentElement(el);
 
+    // The el could be null due to scroll event being fired while the scroll component no long exists.
+    // Early exit would prevent properties of the null el (and null parent) being accessed in offset
+    // calculation below.
+    if (!el) {
+      return;
+    }
+
     let offset;
     if (this.props.useWindow) {
       const doc =
