@@ -49,10 +49,13 @@ export default class InfiniteScroll extends Component {
   componentDidUpdate() {
     if (this.props.isReverse && this.loadMore) {
       const parentElement = this.getParentElement(this.scrollComponent);
-      parentElement.scrollTop =
+
+      if (parentElement) {
+        parentElement.scrollTop =
         parentElement.scrollHeight -
         this.beforeScrollHeight +
         this.beforeScrollTop;
+      }
       this.loadMore = false;
     }
     this.attachScrollListener();
@@ -119,6 +122,10 @@ export default class InfiniteScroll extends Component {
     let scrollEl = window;
     if (this.props.useWindow === false) {
       scrollEl = this.getParentElement(this.scrollComponent);
+    }
+
+    if (!scrollEl) {
+      return;
     }
 
     scrollEl.removeEventListener(
