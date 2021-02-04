@@ -58,7 +58,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 ### Custom parent element
 
-You can define a custom `parentNode` element to base the scroll calulations on.
+You can define a custom `parentNode` element to base the scroll calculations on.
 
 ```js
 <div style="height:700px;overflow:auto;" ref={(ref) => this.scrollParentRef = ref}>
