@@ -7,6 +7,8 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "declaration": true,
+    "outDir": "dist",
     "strictNullChecks": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
@@ -14,7 +16,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
-    "noEmit": true,
     "jsx": "react-jsx"
   },
   "include": ["src/*.ts", "src/*.tsx"]
