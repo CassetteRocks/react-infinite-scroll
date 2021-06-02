@@ -277,6 +277,13 @@ var InfiniteScroll = (function(_Component) {
     {
       key: 'scrollListener',
       value: function scrollListener() {
+        // It appears to be the that ScrollComponent can be already removed at the time this method
+        // is invoked. This early return is needed to prevent the offset calculation from accessing
+        // properties of a null scrollable component. The early return won't alter logic of method
+        // as the element is required to be visible to loadMore.
+        if (!this.scrollComponent) {
+          return;
+        }
         var el = this.scrollComponent;
         var scrollEl = window;
         var parentNode = this.getParentElement(el);
@@ -298,7 +305,8 @@ var InfiniteScroll = (function(_Component) {
           }
         } else if (this.props.isReverse) {
           offset = parentNode.scrollTop;
-        } else {
+        } else if (el) {
+          // ScrollComponent can be already removed
           offset =
             el.scrollHeight - parentNode.scrollTop - parentNode.clientHeight;
         }
